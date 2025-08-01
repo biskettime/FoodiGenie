@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void main() {
@@ -136,7 +135,7 @@ class _LoginScreenState extends State<LoginScreen> {
           text: 'Continue with Facebook',
           backgroundColor: Color(0xFF3a63ed),
           textColor: Colors.white,
-          icon: FontAwesomeIcons.facebookF,
+          icon: Icons.facebook,
           onPressed: () {
             // Handle Facebook login
           },
@@ -150,7 +149,7 @@ class _LoginScreenState extends State<LoginScreen> {
           backgroundColor: Color(0xFFFFFCF5),
           textColor: Color(0xFF40392B),
           borderColor: Color(0xFF6E5C49).withOpacity(0.2),
-          icon: FontAwesomeIcons.google,
+          icon: Icons.g_mobiledata,
           onPressed: () {
             // Handle Google login
           },
@@ -163,7 +162,7 @@ class _LoginScreenState extends State<LoginScreen> {
           text: 'Continue with Apple',
           backgroundColor: Color(0xFF40392B),
           textColor: Color(0xFFFFFCF5),
-          icon: FontAwesomeIcons.apple,
+          icon: Icons.apple,
           onPressed: () {
             // Handle Apple login
           },
@@ -325,7 +324,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
           text: 'Sign up with Facebook',
           backgroundColor: Color(0xFF3a63ed),
           textColor: Colors.white,
-          icon: FontAwesomeIcons.facebookF,
+          icon: Icons.facebook,
           onPressed: () {
             // Handle Facebook signup
           },
@@ -341,7 +340,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
           backgroundColor: Color(0xFFFFFCF5),
           textColor: Colors.black,
           borderColor: Colors.black.withOpacity(0.12),
-          icon: FontAwesomeIcons.google,
+          icon: Icons.g_mobiledata,
           onPressed: () {
             // Handle Google signup
           },
@@ -356,11 +355,11 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
           text: 'Sign up with Apple',
           backgroundColor: Colors.black,
           textColor: Colors.white,
-          icon: FontAwesomeIcons.apple,
+          icon: Icons.apple,
           onPressed: () {
             // Handle Apple signup
           },
-          width: 370,
+      width: 370,
           borderRadius: 48,
         ),
       ],
@@ -1010,7 +1009,7 @@ Widget buildSocialButton({
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           if (icon != null) ...[
-            FaIcon(
+            Icon(
               icon,
               size: 20,
               color: textColor,
@@ -1031,138 +1030,7 @@ Widget buildSocialButton({
   );
 }
 
-Widget buildRecipeCard(Recipe recipe, FavoritesManager favoritesManager, Function(String) onToggleFavorite) {
-  return GestureDetector(
-    onTap: () {
-      // Navigate to recipe details
-    },
-    child: Container(
-      decoration: BoxDecoration(
-        color: Color(0xFFFFFDFC),
-        borderRadius: BorderRadius.circular(18),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            spreadRadius: 1,
-            blurRadius: 5,
-            offset: Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Recipe Image with Bookmark Icon
-          Stack(
-            children: [
-              Container(
-                height: 128,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(18)),
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(18)),
-                  child: Image.asset(
-                    recipe.imageUrl,
-                    width: double.infinity,
-                    height: 128,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Container(
-                        color: Color(0xFF4CAF50).withOpacity(0.3),
-                        child: Center(
-                          child: Icon(
-                            Icons.restaurant,
-                            size: 40,
-                            color: Colors.white,
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ),
-              // Bookmark Icon
-              Positioned(
-                top: 8,
-                right: 8,
-                child: GestureDetector(
-                  onTap: () => onToggleFavorite(recipe.id),
-                  child: Container(
-                    padding: EdgeInsets.all(6),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.9),
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      favoritesManager.isRecipeFavorite(recipe.id) 
-                        ? Icons.bookmark 
-                        : Icons.bookmark_border,
-                      color: favoritesManager.isRecipeFavorite(recipe.id) 
-                        ? Color(0xFFFFB800) 
-                        : Color(0xFF281D1B).withOpacity(0.6),
-                      size: 18,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          
-          // Recipe Info
-          Padding(
-            padding: EdgeInsets.all(12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  recipe.name,
-                  style: GoogleFonts.robotoSlab(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w700,
-                    color: Color(0xFF281D1B),
-                    letterSpacing: -0.3,
-                  ),
-                ),
-                SizedBox(height: 4),
-                Text(
-                  recipe.description,
-                  style: GoogleFonts.publicSans(
-                    fontSize: 13,
-                    color: Color(0xFF2E1814).withOpacity(0.62),
-                    letterSpacing: -0.065,
-                  ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                SizedBox(height: 8),
-                Row(
-                  children: [
-                    buildStarRating(recipe.rating),
-                    Spacer(),
-                    Icon(
-                      Icons.access_time,
-                      size: 12,
-                      color: Color(0xFF2E1814).withOpacity(0.62),
-                    ),
-                    SizedBox(width: 2),
-                    Text(
-                      '${recipe.cookTime} min',
-                      style: GoogleFonts.publicSans(
-                        fontSize: 12,
-                        color: Color(0xFF2E1814).withOpacity(0.62),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    ),
-  );
-}
+
 
 // Data Models
 class AppData {
@@ -1759,7 +1627,7 @@ class _HomeScreenState extends State<HomeScreen> {
             itemBuilder: (context, index) => Container(
               width: 173,
               margin: EdgeInsets.only(right: 16),
-              child: buildRecipeCard(featuredRecipes[index], _favoritesManager, _toggleRecipeFavorite),
+              child: _buildHomeRecipeCard(featuredRecipes[index]),
             ),
           ),
         ),
@@ -1770,6 +1638,139 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
 
+
+  Widget _buildHomeRecipeCard(Recipe recipe) {
+    return GestureDetector(
+      onTap: () {
+        // Navigate to recipe details
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: Color(0xFFFFFDFC),
+          borderRadius: BorderRadius.circular(18),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.1),
+              spreadRadius: 1,
+              blurRadius: 5,
+              offset: Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Recipe Image with Bookmark Icon
+            Stack(
+              children: [
+                Container(
+                  height: 128,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.vertical(top: Radius.circular(18)),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.vertical(top: Radius.circular(18)),
+                    child: Image.asset(
+                      recipe.imageUrl,
+                      width: double.infinity,
+                      height: 128,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Container(
+                          color: Color(0xFF4CAF50).withOpacity(0.3),
+                          child: Center(
+                            child: Icon(
+                              Icons.restaurant,
+                              size: 40,
+                              color: Colors.white,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+                // Bookmark Icon
+                Positioned(
+                  top: 8,
+                  right: 8,
+                  child: GestureDetector(
+                    onTap: () => _toggleRecipeFavorite(recipe.id),
+                    child: Container(
+                      padding: EdgeInsets.all(6),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.9),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        _favoritesManager.isRecipeFavorite(recipe.id) 
+                          ? Icons.bookmark 
+                          : Icons.bookmark_border,
+                        color: _favoritesManager.isRecipeFavorite(recipe.id) 
+                          ? Color(0xFFFFB800) 
+                          : Color(0xFF281D1B).withOpacity(0.6),
+                        size: 18,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            
+            // Recipe Info
+            Padding(
+              padding: EdgeInsets.all(12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    recipe.name,
+                    style: GoogleFonts.robotoSlab(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xFF281D1B),
+                      letterSpacing: -0.3,
+                    ),
+                  ),
+                  SizedBox(height: 4),
+                  Text(
+                    recipe.description,
+                    style: GoogleFonts.publicSans(
+                      fontSize: 13,
+                      color: Color(0xFF2E1814).withOpacity(0.62),
+                      letterSpacing: -0.065,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  SizedBox(height: 8),
+                  Row(
+                    children: [
+                      buildStarRating(recipe.rating),
+                      Spacer(),
+                      Icon(
+                        Icons.access_time,
+                        size: 12,
+                        color: Color(0xFF2E1814).withOpacity(0.62),
+                      ),
+                      SizedBox(width: 2),
+                      Text(
+                        '${recipe.cookTime} min',
+                        style: GoogleFonts.publicSans(
+                          fontSize: 12,
+                          color: Color(0xFF2E1814).withOpacity(0.62),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
   Widget _buildRestaurantCard(Restaurant restaurant) {
     return Container(
@@ -2073,20 +2074,20 @@ class _SearchScreenState extends State<SearchScreen> {
                 child: _searchController.text.isNotEmpty 
                   ? _buildSearchResults()
                   : Column(
-                      children: [
-                        // Table Title Huge
-                        _buildTableTitle(),
-                        
-                        // Map Search Results
-                        _buildMapSearchResults(),
-                        
-                        // Image Grid Dynamic Sizes
-                        _buildImageGrid(),
-                        
-                        // Popular Places Section
-                        _buildPopularPlaces(),
-                      ],
-                    ),
+                  children: [
+                    // Table Title Huge
+                    _buildTableTitle(),
+                    
+                    // Map Search Results
+                    _buildMapSearchResults(),
+                    
+                    // Image Grid Dynamic Sizes
+                    _buildImageGrid(),
+                    
+                    // Popular Places Section
+                    _buildPopularPlaces(),
+                  ],
+                ),
               ),
             ),
           ],
@@ -2210,35 +2211,35 @@ class _SearchScreenState extends State<SearchScreen> {
           Expanded(
             child: Container(
               height: 49, // 고정 높이 설정으로 overflow 방지
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    item['title'],
-                    style: GoogleFonts.plusJakartaSans(
-                      fontSize: 17,
-                      fontWeight: FontWeight.w700,
-                      color: Color(0xFF222222),
-                      letterSpacing: -0.34,
-                    ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  item['title'],
+                  style: GoogleFonts.plusJakartaSans(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w700,
+                    color: Color(0xFF222222),
+                    letterSpacing: -0.34,
+                  ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                  ),
+                ),
                   SizedBox(height: 2), // 간격 줄임
                   Expanded(
                     child: Text(
-                      item['description'],
-                      style: GoogleFonts.plusJakartaSans(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xFF212121).withOpacity(0.62),
-                      ),
-                      maxLines: 1, // 1줄로 제한
-                      overflow: TextOverflow.ellipsis,
-                    ),
+                  item['description'],
+                  style: GoogleFonts.plusJakartaSans(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w400,
+                    color: Color(0xFF212121).withOpacity(0.62),
                   ),
-                ],
+                      maxLines: 1, // 1줄로 제한
+                  overflow: TextOverflow.ellipsis,
+                    ),
+                ),
+              ],
               ),
             ),
           ),
@@ -2246,11 +2247,11 @@ class _SearchScreenState extends State<SearchScreen> {
           Container(
             width: 50,
             child: Text(
-              item['distance'],
-              style: GoogleFonts.plusJakartaSans(
-                fontSize: 15,
-                fontWeight: FontWeight.w400,
-                color: Color(0xFF212121).withOpacity(0.62),
+            item['distance'],
+            style: GoogleFonts.plusJakartaSans(
+              fontSize: 15,
+              fontWeight: FontWeight.w400,
+              color: Color(0xFF212121).withOpacity(0.62),
               ),
               textAlign: TextAlign.right,
             ),
@@ -2313,20 +2314,20 @@ class _SearchScreenState extends State<SearchScreen> {
               // Right image (larger - 250x176)
               Container(
                 width: 250,
-                height: 176,
-                margin: EdgeInsets.only(bottom: 4),
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(foodImages[2]),
-                    fit: BoxFit.cover,
-                    onError: (exception, stackTrace) {},
+                  height: 176,
+                  margin: EdgeInsets.only(bottom: 4),
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage(foodImages[2]),
+                      fit: BoxFit.cover,
+                      onError: (exception, stackTrace) {},
+                    ),
+                  color: Color(0xFFFF9800).withOpacity(0.3),
                   ),
+                  child: foodImages[2].isNotEmpty ? null : Container(
                   color: Color(0xFFFF9800).withOpacity(0.3),
-                ),
-                child: foodImages[2].isNotEmpty ? null : Container(
-                  color: Color(0xFFFF9800).withOpacity(0.3),
-                  child: Center(
-                    child: Icon(Icons.restaurant, size: 40, color: Colors.white),
+                    child: Center(
+                      child: Icon(Icons.restaurant, size: 40, color: Colors.white),
                   ),
                 ),
               ),
@@ -2360,23 +2361,23 @@ class _SearchScreenState extends State<SearchScreen> {
               // Left image (larger - 250x176)
               Container(
                 width: 250,
-                height: 176,
-                margin: EdgeInsets.only(right: 4),
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(foodImages[4]),
-                    fit: BoxFit.cover,
-                    onError: (exception, stackTrace) {},
-                  ),
+                  height: 176,
+                  margin: EdgeInsets.only(right: 4),
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage(foodImages[4]),
+                      fit: BoxFit.cover,
+                      onError: (exception, stackTrace) {},
+                    ),
                   color: Color(0xFF9C27B0).withOpacity(0.3),
-                ),
-                child: foodImages[4].isNotEmpty ? null : Container(
+                  ),
+                  child: foodImages[4].isNotEmpty ? null : Container(
                   color: Color(0xFF9C27B0).withOpacity(0.3),
-                  child: Center(
-                    child: Icon(Icons.restaurant, size: 40, color: Colors.white),
+                    child: Center(
+                      child: Icon(Icons.restaurant, size: 40, color: Colors.white),
+                    ),
                   ),
                 ),
-              ),
               // Right image (smaller - 139x176)
               Container(
                 width: 139,
@@ -2414,29 +2415,29 @@ class _SearchScreenState extends State<SearchScreen> {
         children: [
           Expanded(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min, // 내용 크기에 맞춤
-              children: [
-                Text(
-                  'Popular Places',
-                  style: GoogleFonts.plusJakartaSans(
+            children: [
+              Text(
+                'Popular Places',
+                style: GoogleFonts.plusJakartaSans(
                     fontSize: 17, // 폰트 크기 약간 줄임
-                    fontWeight: FontWeight.w700,
-                    color: Color(0xFF222222),
+                  fontWeight: FontWeight.w700,
+                  color: Color(0xFF222222),
                     letterSpacing: -0.34,
                     height: 1.2, // 줄간격 조정
-                  ),
                 ),
-                Text(
-                  'See All',
-                  style: GoogleFonts.plusJakartaSans(
+              ),
+              Text(
+                'See All',
+                style: GoogleFonts.plusJakartaSans(
                     fontSize: 12, // 폰트 크기 줄임
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xFF212121).withOpacity(0.62),
+                  fontWeight: FontWeight.w400,
+                  color: Color(0xFF212121).withOpacity(0.62),
                     height: 1.1, // 줄간격 조정
-                  ),
                 ),
-              ],
+              ),
+            ],
             ),
           ),
           // Forward Arrow
@@ -2528,9 +2529,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 itemBuilder: (context, index) => Container(
                   width: 173,
                   margin: EdgeInsets.only(right: 16),
-                  child: buildRecipeCard(_filteredRecipes[index], _favoritesManager, (String recipeId) {
-                    _favoritesManager.toggleRecipeFavorite(recipeId);
-                  }),
+                  child: _buildSearchRecipeCard(_filteredRecipes[index]),
                 ),
               ),
             ),
@@ -2562,6 +2561,139 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
 
+
+  Widget _buildSearchRecipeCard(Recipe recipe) {
+    return GestureDetector(
+      onTap: () {
+        // Navigate to recipe details
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: Color(0xFFFFFDFC),
+          borderRadius: BorderRadius.circular(18),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.1),
+              spreadRadius: 1,
+              blurRadius: 5,
+              offset: Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Recipe Image with Bookmark Icon
+            Stack(
+              children: [
+                Container(
+                  height: 128,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.vertical(top: Radius.circular(18)),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.vertical(top: Radius.circular(18)),
+                    child: Image.asset(
+                      recipe.imageUrl,
+                      width: double.infinity,
+                      height: 128,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Container(
+                          color: Color(0xFF4CAF50).withOpacity(0.3),
+                          child: Center(
+                            child: Icon(
+                              Icons.restaurant,
+                              size: 40,
+                              color: Colors.white,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+                // Bookmark Icon
+                Positioned(
+                  top: 8,
+                  right: 8,
+                  child: GestureDetector(
+                    onTap: () => _favoritesManager.toggleRecipeFavorite(recipe.id),
+                    child: Container(
+                      padding: EdgeInsets.all(6),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.9),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        _favoritesManager.isRecipeFavorite(recipe.id) 
+                          ? Icons.bookmark 
+                          : Icons.bookmark_border,
+                        color: _favoritesManager.isRecipeFavorite(recipe.id) 
+                          ? Color(0xFFFFB800) 
+                          : Color(0xFF281D1B).withOpacity(0.6),
+                        size: 18,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            
+            // Recipe Info
+            Padding(
+              padding: EdgeInsets.all(12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    recipe.name,
+                    style: GoogleFonts.robotoSlab(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xFF281D1B),
+                      letterSpacing: -0.3,
+                    ),
+                  ),
+                  SizedBox(height: 4),
+                  Text(
+                    recipe.description,
+                    style: GoogleFonts.publicSans(
+                      fontSize: 13,
+                      color: Color(0xFF2E1814).withOpacity(0.62),
+                      letterSpacing: -0.065,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  SizedBox(height: 8),
+                  Row(
+                    children: [
+                      buildStarRating(recipe.rating),
+                      Spacer(),
+                      Icon(
+                        Icons.access_time,
+                        size: 12,
+                        color: Color(0xFF2E1814).withOpacity(0.62),
+                      ),
+                      SizedBox(width: 2),
+                      Text(
+                        '${recipe.cookTime} min',
+                        style: GoogleFonts.publicSans(
+                          fontSize: 12,
+                          color: Color(0xFF2E1814).withOpacity(0.62),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
   Widget _buildSearchRestaurantCard(Restaurant restaurant) {
     return Container(
@@ -2693,49 +2825,7 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
-  Widget _buildStarRating(double rating) {
-    List<Widget> stars = [];
-    int fullStars = rating.floor();
-    bool hasHalfStar = (rating - fullStars) >= 0.5;
-    
-    // Full stars - 빨간색
-    for (int i = 0; i < fullStars; i++) {
-      stars.add(
-        Icon(
-          Icons.star,
-          size: 14,
-          color: Colors.red,
-        ),
-      );
-    }
-    
-    // Half star - 빨간색
-    if (hasHalfStar && stars.length < 5) {
-      stars.add(
-        Icon(
-          Icons.star_half,
-          size: 14,
-          color: Colors.red,
-        ),
-      );
-    }
-    
-    // Empty stars - 회색
-    while (stars.length < 5) {
-      stars.add(
-        Icon(
-          Icons.star_border,
-          size: 14,
-          color: Color(0xFF281D1B).withOpacity(0.3),
-        ),
-      );
-    }
-    
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: stars,
-    );
-  }
+
 }
 
 // Favorites Screen matching Figma Favorites Page design exactly
@@ -2762,92 +2852,9 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
     _pageController.dispose();
     super.dispose();
   }
-  // Restaurant data from Figma Favorites Page
-  final List<Map<String, dynamic>> firstGroupRestaurants = [
-    {
-      'name': 'Sushi Delight',
-      'rating': 4.5,
-      'priceRange': '\$\$',
-      'category': 'Japanese',
-      'time': '30 mins',
-      'imageUrl': 'assets/images/quinoa_salad.png',
-    },
-    {
-      'name': 'Pasta Paradise',
-      'rating': 4.7,
-      'priceRange': '\$\$',
-      'category': 'Italian',
-      'time': '25 mins',
-      'imageUrl': 'assets/images/avocado_toast.png',
-    },
-    {
-      'name': 'Burger Bonanza',
-      'rating': 4.2,
-      'priceRange': '\$',
-      'category': 'American',
-      'time': '20 mins',
-      'imageUrl': 'assets/images/smoothie_bowl.png',
-    },
-    {
-      'name': 'Taco Fiesta',
-      'rating': 4.8,
-      'priceRange': '\$',
-      'category': 'Mexican',
-      'time': '15 mins',
-      'imageUrl': 'assets/images/organic_products.png',
-    },
-    {
-      'name': 'Curry House',
-      'rating': 4.6,
-      'priceRange': '\$\$',
-      'category': 'Indian',
-      'time': '35 mins',
-      'imageUrl': 'assets/images/vegan_options.png',
-    },
-  ];
-
-  final List<Map<String, dynamic>> secondGroupRestaurants = [
-    {
-      'name': 'Vegan Delight',
-      'rating': 4.9,
-      'priceRange': '\$\$',
-      'category': 'Vegan',
-      'time': '40 mins',
-      'imageUrl': 'assets/images/gluten_free.png',
-    },
-    {
-      'name': 'Gluten-Free Gourmet',
-      'rating': 4.8,
-      'priceRange': '\$\$',
-      'category': 'Gluten-Free',
-      'time': '35 mins',
-      'imageUrl': 'assets/images/dairy_free.png',
-    },
-    {
-      'name': 'Keto Kitchen',
-      'rating': 4.7,
-      'priceRange': '\$\$',
-      'category': 'Keto',
-      'time': '30 mins',
-      'imageUrl': 'assets/images/restaurant_vegan.png',
-    },
-    {
-      'name': 'Paleo Plates',
-      'rating': 4.6,
-      'priceRange': '\$\$',
-      'category': 'Paleo',
-      'time': '45 mins',
-      'imageUrl': 'assets/images/restaurant_organic.png',
-    },
-    {
-      'name': 'Mediterranean Magic',
-      'rating': 4.9,
-      'priceRange': '\$\$',
-      'category': 'Mediterranean',
-      'time': '50 mins',
-      'imageUrl': 'assets/images/quinoa_salad.png',
-    },
-  ];
+  // AppData의 restaurants 사용
+  List<Restaurant> get firstGroupRestaurants => AppData.restaurants.take(5).toList();
+  List<Restaurant> get secondGroupRestaurants => AppData.restaurants.skip(5).take(5).toList();
 
   final List<String> ingredients = [
     'Rice',
@@ -2894,18 +2901,18 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
             },
             itemBuilder: (context, index) {
               return Container(
-                width: double.infinity,
-                height: 600,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
+            width: double.infinity,
+            height: 600,
+            decoration: BoxDecoration(
+              image: DecorationImage(
                     image: AssetImage(_headerImages[index]['image']!),
-                    fit: BoxFit.cover,
+                fit: BoxFit.cover,
                     onError: (exception, stackTrace) {
                       print('Error loading image: ${_headerImages[index]['image']}');
                     },
-                  ),
-                ),
-                child: Container(
+              ),
+            ),
+            child: Container(
                   color: Colors.black.withOpacity(0.3), // 더 연한 overlay
                   child: Center(
                     child: Container(
@@ -3069,11 +3076,11 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
           // Food Items - 세로 스크롤
           Column(
             children: [
-              // First Group Restaurant Cards
-              ...firstGroupRestaurants.map((restaurant) => _buildFirstGroupRestaurantCard(restaurant)).toList(),
-              
-              // Second Group Restaurant Cards  
-              ...secondGroupRestaurants.map((restaurant) => _buildSecondGroupRestaurantCard(restaurant)).toList(),
+          // First Group Restaurant Cards
+          ...firstGroupRestaurants.map((restaurant) => _buildFirstGroupRestaurantCard(restaurant)).toList(),
+          
+          // Second Group Restaurant Cards
+          ...secondGroupRestaurants.map((restaurant) => _buildSecondGroupRestaurantCard(restaurant)).toList(),
             ],
           ),
           
@@ -3107,44 +3114,8 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
   }
 
   Widget _buildRecipesHorizontalScroll() {
-    // 샘플 레시피 데이터
-    final List<Map<String, dynamic>> featuredRecipes = [
-      {
-        'name': 'Sushi Roll Recipe',
-        'time': '45 mins',
-        'difficulty': 'Medium',
-        'rating': 4.8,
-        'image': 'assets/images/sushi_circular_platter.png',
-      },
-      {
-        'name': 'Pasta Marinara',
-        'time': '30 mins', 
-        'difficulty': 'Easy',
-        'rating': 4.6,
-        'image': 'assets/images/pasta_marinara_basil.png',
-      },
-      {
-        'name': 'Gourmet Burger',
-        'time': '25 mins',
-        'difficulty': 'Medium',
-        'rating': 4.7,
-        'image': 'assets/images/burger_deluxe.png',
-      },
-      {
-        'name': 'Fresh Tacos',
-        'time': '20 mins',
-        'difficulty': 'Easy', 
-        'rating': 4.5,
-        'image': 'assets/images/taco_colorful.png',
-      },
-      {
-        'name': 'Curry Special',
-        'time': '40 mins',
-        'difficulty': 'Hard',
-        'rating': 4.9,
-        'image': 'assets/images/curry_main.png',
-      },
-    ];
+    // AppData의 recipes 사용
+    final List<Recipe> featuredRecipes = AppData.recipes;
 
     return Container(
       height: 280,
@@ -3164,7 +3135,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
     );
   }
 
-  Widget _buildRecipeCard(Map<String, dynamic> recipe) {
+  Widget _buildRecipeCard(Recipe recipe) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -3197,7 +3168,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                 topRight: Radius.circular(16),
               ),
               child: Image.asset(
-                recipe['image'],
+                recipe.imageUrl,
                 fit: BoxFit.cover,
                 errorBuilder: (context, error, stackTrace) {
                   return Container(
@@ -3224,7 +3195,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                 children: [
                   // Recipe Name
                   Text(
-                    recipe['name'],
+                    recipe.name,
                     style: GoogleFonts.plusJakartaSans(
                       fontSize: 16,
                       fontWeight: FontWeight.w700,
@@ -3242,7 +3213,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                       Icon(Icons.access_time, size: 14, color: Colors.grey),
                       SizedBox(width: 4),
                       Text(
-                        recipe['time'],
+                        '${recipe.cookTime} min',
                         style: GoogleFonts.plusJakartaSans(
                           fontSize: 12,
                           color: Colors.grey[600],
@@ -3252,7 +3223,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                       Icon(Icons.star, size: 14, color: Colors.amber),
                       SizedBox(width: 4),
                       Text(
-                        recipe['rating'].toString(),
+                        recipe.rating.toString(),
                         style: GoogleFonts.plusJakartaSans(
                           fontSize: 12,
                           color: Colors.grey[600],
@@ -3263,15 +3234,16 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                   
                   SizedBox(height: 4),
                   
-                  // Difficulty
-                  Text(
-                    recipe['difficulty'],
-                    style: GoogleFonts.plusJakartaSans(
-                      fontSize: 12,
-                      color: Color(0xFF4CAF50),
-                      fontWeight: FontWeight.w600,
+                  // Tags
+                  if (recipe.tags.isNotEmpty)
+                    Text(
+                      recipe.tags.first,
+                      style: GoogleFonts.plusJakartaSans(
+                        fontSize: 12,
+                        color: Color(0xFF4CAF50),
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
-                  ),
                 ],
               ),
             ),
@@ -3281,7 +3253,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
     );
   }
 
-  Widget _buildFirstGroupRestaurantCard(Map<String, dynamic> restaurant) {
+  Widget _buildFirstGroupRestaurantCard(Restaurant restaurant) {
     return Container(
       width: double.infinity,
       margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -3304,7 +3276,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
               children: [
                 Expanded(
                   child: Text(
-                    restaurant['name'],
+                    restaurant.name,
                     style: GoogleFonts.plusJakartaSans(
                       fontSize: 17,
                       fontWeight: FontWeight.w700,
@@ -3328,14 +3300,14 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                 Icon(Icons.star, size: 12, color: Color(0xFF222222)),
                 SizedBox(width: 4),
                 Text(
-                  restaurant['rating'].toString(),
+                  restaurant.rating.toString(),
                   style: GoogleFonts.plusJakartaSans(
                     fontSize: 13,
                     fontWeight: FontWeight.w500,
                     color: Color(0xFF212121).withOpacity(0.62),
                   ),
                 ),
-                Text(' · ${restaurant['priceRange']} · ${restaurant['category']} · ${restaurant['time']}',
+                Text(' · ${restaurant.priceRange} · ${restaurant.categories.first} · ${restaurant.deliveryTime} mins',
                   style: GoogleFonts.plusJakartaSans(
                     fontSize: 13,
                     fontWeight: FontWeight.w500,
@@ -3357,13 +3329,13 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
                       image: DecorationImage(
-                        image: AssetImage(restaurant['imageUrl']),
+                        image: AssetImage(restaurant.imageUrls.first),
                         fit: BoxFit.cover,
                         onError: (exception, stackTrace) {},
                       ),
                       color: Color(0xFF4CAF50).withOpacity(0.3),
                     ),
-                    child: restaurant['imageUrl'].isNotEmpty ? null : Container(
+                    child: restaurant.imageUrls.isNotEmpty ? null : Container(
                       color: Color(0xFF4CAF50).withOpacity(0.3),
                       child: Center(
                         child: Icon(Icons.restaurant, size: 60, color: Colors.white),
@@ -3409,7 +3381,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
     );
   }
 
-  Widget _buildSecondGroupRestaurantCard(Map<String, dynamic> restaurant) {
+  Widget _buildSecondGroupRestaurantCard(Restaurant restaurant) {
     return Container(
       width: double.infinity,
       margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -3432,7 +3404,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
               children: [
                 Expanded(
                   child: Text(
-                    restaurant['name'],
+                    restaurant.name,
                     style: GoogleFonts.plusJakartaSans(
                       fontSize: 17,
                       fontWeight: FontWeight.w400,
@@ -3455,14 +3427,14 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                 Icon(Icons.star, size: 12, color: Color(0xFF1B2128)),
                 SizedBox(width: 4),
                 Text(
-                  restaurant['rating'].toString(),
+                  restaurant.rating.toString(),
                   style: GoogleFonts.plusJakartaSans(
                     fontSize: 13,
                     fontWeight: FontWeight.w400,
                     color: Color(0xFF14212E).withOpacity(0.62),
                   ),
                 ),
-                Text(' · ${restaurant['priceRange']} · ${restaurant['category']} · ${restaurant['time']}',
+                Text(' · ${restaurant.priceRange} · ${restaurant.categories.first} · ${restaurant.deliveryTime} mins',
                   style: GoogleFonts.plusJakartaSans(
                     fontSize: 13,
                     fontWeight: FontWeight.w400,
@@ -3484,13 +3456,13 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
                       image: DecorationImage(
-                        image: AssetImage(restaurant['imageUrl']),
+                        image: AssetImage(restaurant.imageUrls.first),
                         fit: BoxFit.cover,
                         onError: (exception, stackTrace) {},
                       ),
                       color: Color(0xFF2196F3).withOpacity(0.3),
                     ),
-                    child: restaurant['imageUrl'].isNotEmpty ? null : Container(
+                    child: restaurant.imageUrls.isNotEmpty ? null : Container(
                       color: Color(0xFF2196F3).withOpacity(0.3),
                       child: Center(
                         child: Icon(Icons.restaurant, size: 60, color: Colors.white),
@@ -3682,18 +3654,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
       child: Stack(
         children: [
           // Background Image
-          Container(
-            width: double.infinity,
+              Container(
+                    width: double.infinity,
             height: 426,
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: AssetImage('assets/images/quinoa_salad.png'),
-                fit: BoxFit.cover,
+                    fit: BoxFit.cover,
                 onError: (exception, stackTrace) {},
               ),
               color: Color(0xFF4CAF50).withOpacity(0.8),
             ),
-            child: Container(
+                  child: Container(
               color: Color(0xFF4CAF50).withOpacity(0.3),
             ),
           ),
@@ -3721,35 +3693,35 @@ class _ProfileScreenState extends State<ProfileScreen> {
             right: 0,
             child: Container(
               height: 104,
-              child: Column(
-                children: [
+      child: Column(
+        children: [
                   // Status Bar
                   Container(
                     height: 56,
                     padding: EdgeInsets.symmetric(horizontal: 32),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
                         Text(
                           'Recipe Time',
                           style: GoogleFonts.inter(
-                            fontSize: 17,
+                    fontSize: 17,
                             fontWeight: FontWeight.w600,
                             color: Colors.white,
                             height: 1.21,
                           ),
                         ),
-                        Row(
-                          children: [
+          Row(
+            children: [
                             Icon(Icons.signal_cellular_4_bar, size: 16, color: Colors.white),
                             SizedBox(width: 6),
                             Icon(Icons.wifi, size: 16, color: Colors.white),
                             SizedBox(width: 6),
                             Icon(Icons.battery_full, size: 16, color: Colors.white),
                           ],
-                        ),
-                      ],
-                    ),
+              ),
+            ],
+          ),
                   ),
                   // Navigation
                   Container(
@@ -3760,15 +3732,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         style: GoogleFonts.inter(
                           fontSize: 17,
                           fontWeight: FontWeight.w600,
-                          color: Colors.white,
+                        color: Colors.white,
                           letterSpacing: -0.425,
                           height: 1.21,
-                        ),
                       ),
-                    ),
-                  ),
-                ],
               ),
+            ),
+          ),
+        ],
+      ),
             ),
           ),
         ],
@@ -3796,16 +3768,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               color: Color(0xFF4CAF50).withOpacity(0.3),
             ),
-            child: Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
+                child: Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
                 color: Color(0xFF4CAF50).withOpacity(0.3),
               ),
               child: Center(
                 child: Icon(Icons.person, size: 60, color: Colors.white),
+                  ),
+                ),
               ),
-            ),
-          ),
           SizedBox(height: 16),
           
           // Profile Info
@@ -3905,18 +3877,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
       color: Color(0xFF080808),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+      children: [
           // Post Header
           Container(
-            padding: EdgeInsets.all(16),
-            child: Row(
-              children: [
+        padding: EdgeInsets.all(16),
+        child: Row(
+          children: [
                 // User Avatar
-                Container(
+            Container(
                   width: 40,
                   height: 40,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
                     image: DecorationImage(
                       image: AssetImage(post['userImage']),
                       fit: BoxFit.cover,
@@ -3932,21 +3904,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: Center(
                       child: Icon(Icons.person, size: 20, color: Colors.white),
                     ),
-                  ),
-                ),
-                SizedBox(width: 16),
+              ),
+            ),
+            SizedBox(width: 16),
                 // User Info
-                Expanded(
+            Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         post['username'],
                         style: GoogleFonts.inter(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
                           color: Color(0xFFDDDDDD),
-                          letterSpacing: -0.075,
+                  letterSpacing: -0.075,
                           height: 1.35,
                         ),
                       ),
@@ -3958,10 +3930,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           color: Color(0xFFDEDEDE).withOpacity(0.62),
                           height: 1.21,
                         ),
-                      ),
-                    ],
-                  ),
-                ),
+            ),
+          ],
+        ),
+      ),
               ],
             ),
           ),
@@ -4009,7 +3981,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           SizedBox(height: 16),
           
           // Post Actions
-          Container(
+              Container(
             padding: EdgeInsets.symmetric(horizontal: 16),
             child: Row(
               children: [
@@ -4018,7 +3990,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   children: [
                     Icon(Icons.favorite_border, size: 16, color: Color(0xFFDDDDDD)),
                     SizedBox(width: 8),
-                    Text(
+              Text(
                       post['likes'].toString(),
                       style: GoogleFonts.inter(
                         fontSize: 15,
@@ -4026,17 +3998,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         color: Color(0xFFDDDDDD),
                         letterSpacing: -0.075,
                         height: 1.35,
-                      ),
-                    ),
-                  ],
                 ),
+              ),
+            ],
+          ),
                 SizedBox(width: 20),
                 // Comment Button
                 Row(
-                  children: [
+            children: [
                     Icon(Icons.chat_bubble_outline, size: 16, color: Color(0xFFDDDDDD)),
                     SizedBox(width: 8),
-                    Text(
+              Text(
                       post['comments'].toString(),
                       style: GoogleFonts.inter(
                         fontSize: 15,
