@@ -362,7 +362,7 @@
       "languageVersion": "3.4"
     },
     {
-      "name": "login_app",
+      "name": "foodigenie",
       "rootUri": "../",
       "packageUri": "lib/",
       "languageVersion": "2.12"

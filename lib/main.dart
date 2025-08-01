@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -133,7 +132,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Column(
       children: [
         // Facebook Button
-        _buildSocialButton(
+        buildSocialButton(
           text: 'Continue with Facebook',
           backgroundColor: Color(0xFF3a63ed),
           textColor: Colors.white,
@@ -146,7 +145,7 @@ class _LoginScreenState extends State<LoginScreen> {
         SizedBox(height: 16),
         
         // Google Button
-        _buildSocialButton(
+        buildSocialButton(
           text: 'Continue with Google',
           backgroundColor: Color(0xFFFFFCF5),
           textColor: Color(0xFF40392B),
@@ -160,7 +159,7 @@ class _LoginScreenState extends State<LoginScreen> {
         SizedBox(height: 16),
         
         // Apple Button
-        _buildSocialButton(
+        buildSocialButton(
           text: 'Continue with Apple',
           backgroundColor: Color(0xFF40392B),
           textColor: Color(0xFFFFFCF5),
@@ -173,54 +172,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget _buildSocialButton({
-    required String text,
-    required Color backgroundColor,
-    required Color textColor,
-    Color? borderColor,
-    IconData? icon,
-    required VoidCallback onPressed,
-  }) {
-    return Container(
-      width: 361,
-      height: 52,
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: backgroundColor,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(36),
-            side: borderColor != null 
-              ? BorderSide(color: borderColor, width: 1)
-              : BorderSide.none,
-          ),
-          elevation: 0,
-          padding: EdgeInsets.symmetric(horizontal: 16),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (icon != null) ...[
-              FaIcon(
-                icon,
-                size: 20,
-                color: textColor,
-              ),
-              SizedBox(width: 12),
-            ],
-            Text(
-              text,
-              style: GoogleFonts.plusJakartaSans(
-                color: textColor,
-            fontSize: 17,
-                fontWeight: FontWeight.w700,
-          ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+
 
   Widget _buildActionButtons() {
     return Column(
@@ -369,7 +321,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
     return Column(
       children: [
         // Facebook Button
-        _buildSocialButton(
+        buildSocialButton(
           text: 'Sign up with Facebook',
           backgroundColor: Color(0xFF3a63ed),
           textColor: Colors.white,
@@ -377,12 +329,14 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
           onPressed: () {
             // Handle Facebook signup
           },
+          width: 370,
+          borderRadius: 48,
         ),
         
         SizedBox(height: 16),
         
         // Google Button
-        _buildSocialButton(
+        buildSocialButton(
           text: 'Sign up with Google',
           backgroundColor: Color(0xFFFFFCF5),
           textColor: Colors.black,
@@ -391,12 +345,14 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
           onPressed: () {
             // Handle Google signup
           },
+          width: 370,
+          borderRadius: 48,
         ),
         
         SizedBox(height: 16),
         
         // Apple Button
-        _buildSocialButton(
+        buildSocialButton(
           text: 'Sign up with Apple',
           backgroundColor: Colors.black,
           textColor: Colors.white,
@@ -404,59 +360,14 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
           onPressed: () {
             // Handle Apple signup
           },
+          width: 370,
+          borderRadius: 48,
         ),
       ],
     );
   }
 
-  Widget _buildSocialButton({
-    required String text,
-    required Color backgroundColor,
-    required Color textColor,
-    Color? borderColor,
-    IconData? icon,
-    required VoidCallback onPressed,
-  }) {
-    return Container(
-      width: 370,
-      height: 52,
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: backgroundColor,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(48),
-            side: borderColor != null 
-              ? BorderSide(color: borderColor, width: 1)
-              : BorderSide.none,
-          ),
-          elevation: 0,
-          padding: EdgeInsets.symmetric(horizontal: 16),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (icon != null) ...[
-              FaIcon(
-                icon,
-                size: 20,
-                color: textColor,
-              ),
-              SizedBox(width: 12),
-            ],
-            Text(
-              text,
-              style: GoogleFonts.plusJakartaSans(
-                color: textColor,
-                fontSize: 17,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+
 
   Widget _buildEmailSignUpSection() {
     return Column(
@@ -1023,7 +934,344 @@ class _ActualLoginScreenState extends State<ActualLoginScreen> {
   }
 }
 
+// Utility Functions
+Widget buildStarRating(double rating) {
+  List<Widget> stars = [];
+  int fullStars = rating.floor();
+  bool hasHalfStar = (rating - fullStars) >= 0.5;
+  
+  // Full stars - 빨간색으로 변경
+  for (int i = 0; i < fullStars; i++) {
+    stars.add(
+      Icon(
+        Icons.star,
+        size: 14,
+        color: Colors.red, // 빨간색
+      ),
+    );
+  }
+  
+  // Half star - 빨간색으로 변경
+  if (hasHalfStar && stars.length < 5) {
+    stars.add(
+      Icon(
+        Icons.star_half,
+        size: 14,
+        color: Colors.red, // 빨간색
+      ),
+    );
+  }
+  
+  // Empty stars - 회색
+  while (stars.length < 5) {
+    stars.add(
+      Icon(
+        Icons.star_border,
+        size: 14,
+        color: Color(0xFF281D1B).withOpacity(0.3),
+      ),
+    );
+  }
+  
+  return Row(
+    mainAxisSize: MainAxisSize.min,
+    children: stars,
+  );
+}
+
+Widget buildSocialButton({
+  required String text,
+  required Color backgroundColor,
+  required Color textColor,
+  Color? borderColor,
+  IconData? icon,
+  required VoidCallback onPressed,
+  double width = 361,
+  double height = 52,
+  double borderRadius = 36,
+}) {
+  return Container(
+    width: width,
+    height: height,
+    child: ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: backgroundColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(borderRadius),
+          side: borderColor != null 
+            ? BorderSide(color: borderColor, width: 1)
+            : BorderSide.none,
+        ),
+        elevation: 0,
+        padding: EdgeInsets.symmetric(horizontal: 16),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          if (icon != null) ...[
+            FaIcon(
+              icon,
+              size: 20,
+              color: textColor,
+            ),
+            SizedBox(width: 12),
+          ],
+          Text(
+            text,
+            style: GoogleFonts.plusJakartaSans(
+              color: textColor,
+              fontSize: 17,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+Widget buildRecipeCard(Recipe recipe, FavoritesManager favoritesManager, Function(String) onToggleFavorite) {
+  return GestureDetector(
+    onTap: () {
+      // Navigate to recipe details
+    },
+    child: Container(
+      decoration: BoxDecoration(
+        color: Color(0xFFFFFDFC),
+        borderRadius: BorderRadius.circular(18),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            spreadRadius: 1,
+            blurRadius: 5,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Recipe Image with Bookmark Icon
+          Stack(
+            children: [
+              Container(
+                height: 128,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(18)),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(18)),
+                  child: Image.asset(
+                    recipe.imageUrl,
+                    width: double.infinity,
+                    height: 128,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Container(
+                        color: Color(0xFF4CAF50).withOpacity(0.3),
+                        child: Center(
+                          child: Icon(
+                            Icons.restaurant,
+                            size: 40,
+                            color: Colors.white,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+              // Bookmark Icon
+              Positioned(
+                top: 8,
+                right: 8,
+                child: GestureDetector(
+                  onTap: () => onToggleFavorite(recipe.id),
+                  child: Container(
+                    padding: EdgeInsets.all(6),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.9),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      favoritesManager.isRecipeFavorite(recipe.id) 
+                        ? Icons.bookmark 
+                        : Icons.bookmark_border,
+                      color: favoritesManager.isRecipeFavorite(recipe.id) 
+                        ? Color(0xFFFFB800) 
+                        : Color(0xFF281D1B).withOpacity(0.6),
+                      size: 18,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          
+          // Recipe Info
+          Padding(
+            padding: EdgeInsets.all(12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  recipe.name,
+                  style: GoogleFonts.robotoSlab(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w700,
+                    color: Color(0xFF281D1B),
+                    letterSpacing: -0.3,
+                  ),
+                ),
+                SizedBox(height: 4),
+                Text(
+                  recipe.description,
+                  style: GoogleFonts.publicSans(
+                    fontSize: 13,
+                    color: Color(0xFF2E1814).withOpacity(0.62),
+                    letterSpacing: -0.065,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                SizedBox(height: 8),
+                Row(
+                  children: [
+                    buildStarRating(recipe.rating),
+                    Spacer(),
+                    Icon(
+                      Icons.access_time,
+                      size: 12,
+                      color: Color(0xFF2E1814).withOpacity(0.62),
+                    ),
+                    SizedBox(width: 2),
+                    Text(
+                      '${recipe.cookTime} min',
+                      style: GoogleFonts.publicSans(
+                        fontSize: 12,
+                        color: Color(0xFF2E1814).withOpacity(0.62),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
 // Data Models
+class AppData {
+  static final List<Category> categories = [
+    Category(
+      id: '1',
+      name: 'Organic Products',
+      imageUrl: 'assets/images/organic_products.png',
+      color: Color(0xFF4CAF50),
+    ),
+    Category(
+      id: '2',
+      name: 'Vegan Options',
+      imageUrl: 'assets/images/vegan_options.png',
+      color: Color(0xFF8BC34A),
+    ),
+    Category(
+      id: '3',
+      name: 'Gluten-Free',
+      imageUrl: 'assets/images/gluten_free.png',
+      color: Color(0xFFFF9800),
+    ),
+    Category(
+      id: '4',
+      name: 'Dairy-Free',
+      imageUrl: 'assets/images/dairy_free.png',
+      color: Color(0xFF2196F3),
+    ),
+  ];
+
+  static final List<Recipe> recipes = [
+    Recipe(
+      id: '1',
+      name: 'Quinoa Salad',
+      description: 'A healthy blend of quinoa, tomatoes, and cucumbers',
+      imageUrl: 'assets/images/quinoa_salad.png',
+      rating: 4.5,
+      cookTime: 15,
+      tags: ['Healthy', 'Vegan'],
+    ),
+    Recipe(
+      id: '2',
+      name: 'Avocado Toast',
+      description: 'Smashed avocado on sourdough bread',
+      imageUrl: 'assets/images/avocado_toast.png',
+      rating: 4.8,
+      cookTime: 10,
+      tags: ['Quick', 'Healthy'],
+    ),
+    Recipe(
+      id: '3',
+      name: 'Smoothie Bowl',
+      description: 'A refreshing mix of berries and bananas',
+      imageUrl: 'assets/images/smoothie_bowl.png',
+      rating: 4.7,
+      cookTime: 8,
+      tags: ['Breakfast', 'Healthy'],
+    ),
+  ];
+
+  static final List<Restaurant> restaurants = [
+    Restaurant(
+      id: '1',
+      name: 'Green Delight',
+      rating: 4.5,
+      priceRange: '\$\$',
+      categories: ['Vegan'],
+      deliveryTime: 30,
+      imageUrls: ['assets/images/restaurant_vegan.png'],
+    ),
+    Restaurant(
+      id: '2',
+      name: 'Healthy Bites',
+      rating: 4.8,
+      priceRange: '\$\$',
+      categories: ['Organic'],
+      deliveryTime: 25,
+      imageUrls: ['assets/images/restaurant_organic.png'],
+    ),
+    Restaurant(
+      id: '3',
+      name: 'Fresh Feast',
+      rating: 4.7,
+      priceRange: '\$\$\$',
+      categories: ['Gluten-Free'],
+      deliveryTime: 40,
+      imageUrls: ['assets/images/gluten_free.png'],
+    ),
+    Restaurant(
+      id: '4',
+      name: "Nature's Plate",
+      rating: 4.6,
+      priceRange: '\$\$',
+      categories: ['Dairy-Free'],
+      deliveryTime: 35,
+      imageUrls: ['assets/images/dairy_free.png'],
+    ),
+    Restaurant(
+      id: '5',
+      name: 'Pure Eats',
+      rating: 4.9,
+      priceRange: '\$\$\$',
+      categories: ['Organic'],
+      deliveryTime: 45,
+      imageUrls: ['assets/images/organic_products.png'],
+    ),
+  ];
+}
+
 class Category {
   final String id;
   final String name;
@@ -1066,7 +1314,6 @@ class Restaurant {
   final List<String> categories;
   final int deliveryTime;
   final List<String> imageUrls;
-  final bool isFavorite;
 
   Restaurant({
     required this.id,
@@ -1076,7 +1323,6 @@ class Restaurant {
     required this.categories,
     required this.deliveryTime,
     required this.imageUrls,
-    this.isFavorite = false,
   });
 
   Restaurant copyWith({
@@ -1087,7 +1333,6 @@ class Restaurant {
     List<String>? categories,
     int? deliveryTime,
     List<String>? imageUrls,
-    bool? isFavorite,
   }) {
     return Restaurant(
       id: id ?? this.id,
@@ -1097,7 +1342,6 @@ class Restaurant {
       categories: categories ?? this.categories,
       deliveryTime: deliveryTime ?? this.deliveryTime,
       imageUrls: imageUrls ?? this.imageUrls,
-      isFavorite: isFavorite ?? this.isFavorite,
     );
   }
 }
@@ -1200,6 +1444,14 @@ class _MainScreenState extends State<MainScreen> {
           unselectedItemColor: Color(0xFF2E1814).withOpacity(0.6),
           selectedFontSize: 11,
           unselectedFontSize: 11,
+          selectedLabelStyle: GoogleFonts.inter(
+            fontWeight: FontWeight.w600,
+            letterSpacing: 0.2,
+          ),
+          unselectedLabelStyle: GoogleFonts.inter(
+            fontWeight: FontWeight.w500,
+            letterSpacing: 0.1,
+          ),
           currentIndex: _currentIndex,
           onTap: (index) {
             setState(() {
@@ -1255,111 +1507,10 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {});
   }
 
-  // Sample Data
-  final List<Category> categories = [
-    Category(
-      id: '1',
-      name: 'Organic Products',
-      imageUrl: 'assets/images/organic_products.png',
-      color: Color(0xFF4CAF50),
-    ),
-    Category(
-      id: '2',
-      name: 'Vegan Options',
-      imageUrl: 'assets/images/vegan_options.png',
-      color: Color(0xFF8BC34A),
-    ),
-    Category(
-      id: '3',
-      name: 'Gluten-Free',
-      imageUrl: 'assets/images/gluten_free.png',
-      color: Color(0xFFFF9800),
-    ),
-    Category(
-      id: '4',
-      name: 'Dairy-Free',
-      imageUrl: 'assets/images/dairy_free.png',
-      color: Color(0xFF2196F3),
-    ),
-  ];
-
-  final List<Recipe> featuredRecipes = [
-    Recipe(
-      id: '1',
-      name: 'Quinoa Salad',
-      description: 'A healthy blend of quinoa, tomatoes, and cucumbers',
-      imageUrl: 'assets/images/quinoa_salad.png',
-      rating: 4.5,
-      cookTime: 15,
-      tags: ['Healthy', 'Vegan'],
-    ),
-    Recipe(
-      id: '2',
-      name: 'Avocado Toast',
-      description: 'Smashed avocado on sourdough bread',
-      imageUrl: 'assets/images/avocado_toast.png',
-      rating: 4.8,
-      cookTime: 10,
-      tags: ['Quick', 'Healthy'],
-    ),
-    Recipe(
-      id: '3',
-      name: 'Smoothie Bowl',
-      description: 'A refreshing mix of berries and bananas',
-      imageUrl: 'assets/images/smoothie_bowl.png',
-      rating: 4.7,
-      cookTime: 8,
-      tags: ['Breakfast', 'Healthy'],
-    ),
-  ];
-
-  List<Restaurant> restaurants = [
-    Restaurant(
-      id: '1',
-      name: 'Green Delight',
-      rating: 4.5,
-      priceRange: '\$\$',
-      categories: ['Vegan'],
-      deliveryTime: 30,
-      imageUrls: ['assets/images/restaurant_vegan.png'],
-    ),
-    Restaurant(
-      id: '2',
-      name: 'Healthy Bites',
-      rating: 4.8,
-      priceRange: '\$\$',
-      categories: ['Organic'],
-      deliveryTime: 25,
-      imageUrls: ['assets/images/restaurant_organic.png'],
-    ),
-    Restaurant(
-      id: '3',
-      name: 'Fresh Feast',
-      rating: 4.7,
-      priceRange: '\$\$\$',
-      categories: ['Gluten-Free'],
-      deliveryTime: 40,
-      imageUrls: ['assets/images/gluten_free.png'],
-    ),
-    Restaurant(
-      id: '4',
-      name: "Nature's Plate",
-      rating: 4.6,
-      priceRange: '\$\$',
-      categories: ['Dairy-Free'],
-      deliveryTime: 35,
-      imageUrls: ['assets/images/dairy_free.png'],
-    ),
-    Restaurant(
-      id: '5',
-      name: 'Pure Eats',
-      rating: 4.9,
-      priceRange: '\$\$\$',
-      categories: ['Organic'],
-      deliveryTime: 45,
-      imageUrls: ['assets/images/organic_products.png'],
-    ),
-  ];
+  // Use common data
+  final List<Category> categories = AppData.categories;
+  final List<Recipe> featuredRecipes = AppData.recipes;
+  List<Restaurant> restaurants = AppData.restaurants;
 
   // Toggle favorite status
   void _toggleFavorite(String restaurantId) {
@@ -1608,7 +1759,7 @@ class _HomeScreenState extends State<HomeScreen> {
             itemBuilder: (context, index) => Container(
               width: 173,
               margin: EdgeInsets.only(right: 16),
-              child: _buildRecipeCard(featuredRecipes[index]),
+              child: buildRecipeCard(featuredRecipes[index], _favoritesManager, _toggleRecipeFavorite),
             ),
           ),
         ),
@@ -1616,187 +1767,9 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildRecipeCard(Recipe recipe) {
-    return GestureDetector(
-      onTap: () {
-        // Navigate to recipe details
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          color: Color(0xFFFFFDFC),
-          borderRadius: BorderRadius.circular(18),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.1),
-              spreadRadius: 1,
-              blurRadius: 5,
-              offset: Offset(0, 2),
-            ),
-          ],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Recipe Image with Heart Icon
-            Stack(
-              children: [
-                Container(
-                  height: 128,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.vertical(top: Radius.circular(18)),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.vertical(top: Radius.circular(18)),
-                    child: Image.asset(
-                      recipe.imageUrl,
-                      width: double.infinity,
-                      height: 128,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) {
-                        return Container(
-                          color: Color(0xFF4CAF50).withOpacity(0.3),
-                          child: Center(
-                            child: Icon(
-                              Icons.restaurant,
-                              size: 40,
-                              color: Colors.white,
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ),
-                // Heart Icon
-                Positioned(
-                  top: 8,
-                  right: 8,
-                  child: GestureDetector(
-                    onTap: () => _toggleRecipeFavorite(recipe.id),
-                    child: Container(
-                      padding: EdgeInsets.all(6),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.9),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        _favoritesManager.isRecipeFavorite(recipe.id) 
-                          ? Icons.bookmark 
-                          : Icons.bookmark_border,
-                        color: _favoritesManager.isRecipeFavorite(recipe.id) 
-                          ? Color(0xFFFFB800) // 노란색 책갈피
-                          : Color(0xFF281D1B).withOpacity(0.6),
-                        size: 18,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            
-            // Recipe Info
-            Padding(
-              padding: EdgeInsets.all(12),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Recipe Title
-                  Text(
-                    recipe.name,
-                    style: GoogleFonts.robotoSlab(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w700,
-                      color: Color(0xFF281D1B),
-                      letterSpacing: -0.3,
-                    ),
-                  ),
-                  SizedBox(height: 4),
-                  // Recipe Description
-                  Text(
-                    recipe.description,
-                    style: GoogleFonts.publicSans(
-                      fontSize: 13,
-                      color: Color(0xFF2E1814).withOpacity(0.62),
-                      letterSpacing: -0.065,
-                    ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  SizedBox(height: 8),
-                  // Rating Stars and Cook Time
-                  Row(
-                    children: [
-                      // Five Stars Rating
-                      _buildStarRating(recipe.rating),
-                      Spacer(),
-                      // Cook Time with Icon
-                      Icon(
-                        Icons.access_time,
-                        size: 12,
-                        color: Color(0xFF2E1814).withOpacity(0.62),
-                      ),
-                      SizedBox(width: 2),
-                      Text(
-                        '${recipe.cookTime} min',
-                        style: GoogleFonts.publicSans(
-                          fontSize: 12,
-                          color: Color(0xFF2E1814).withOpacity(0.62),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 
-  Widget _buildStarRating(double rating) {
-    List<Widget> stars = [];
-    int fullStars = rating.floor();
-    bool hasHalfStar = (rating - fullStars) >= 0.5;
-    
-    // Full stars - 빨간색으로 변경
-    for (int i = 0; i < fullStars; i++) {
-      stars.add(
-        Icon(
-          Icons.star,
-          size: 14,
-          color: Colors.red, // 빨간색
-        ),
-      );
-    }
-    
-    // Half star - 빨간색으로 변경
-    if (hasHalfStar && stars.length < 5) {
-      stars.add(
-        Icon(
-          Icons.star_half,
-          size: 14,
-          color: Colors.red, // 빨간색
-        ),
-      );
-    }
-    
-    // Empty stars - 회색
-    while (stars.length < 5) {
-      stars.add(
-        Icon(
-          Icons.star_border,
-          size: 14,
-          color: Color(0xFF281D1B).withOpacity(0.3),
-        ),
-      );
-    }
-    
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: stars,
-    );
-  }
+
+
 
   Widget _buildRestaurantCard(Restaurant restaurant) {
     return Container(
@@ -1995,7 +1968,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-// Search Screen with real functionality
+// Search Screen matching Figma Search Page design exactly
 class SearchScreen extends StatefulWidget {
   @override
   _SearchScreenState createState() => _SearchScreenState();
@@ -2003,249 +1976,478 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   final TextEditingController _searchController = TextEditingController();
-  List<Restaurant> _filteredRestaurants = [];
-  List<Recipe> _filteredRecipes = [];
-  bool _isSearching = false;
-  String _searchQuery = '';
   final FavoritesManager _favoritesManager = FavoritesManager();
-
-  // Sample data (same as HomeScreen)
-  final List<Restaurant> _allRestaurants = [
-    Restaurant(
-      id: '1',
-      name: 'Pizza Palace',
-      rating: 4.8,
-      priceRange: '\$\$',
-      categories: ['Italian', 'Pizza'],
-      deliveryTime: 30,
-      imageUrls: ['assets/images/pizza_restaurant.png'],
-    ),
-    Restaurant(
-      id: '2',
-      name: 'Sushi Express',
-      rating: 4.6,
-      priceRange: '\$\$\$',
-      categories: ['Japanese', 'Sushi'],
-      deliveryTime: 25,
-      imageUrls: ['assets/images/sushi_restaurant.png'],
-    ),
-    Restaurant(
-      id: '3',
-      name: 'Burger Junction',
-      rating: 4.4,
-      priceRange: '\$',
-      categories: ['American', 'Burgers'],
-      deliveryTime: 20,
-      imageUrls: ['assets/images/burger_restaurant.png'],
-    ),
-    Restaurant(
-      id: '4',
-      name: 'Green Garden',
-      rating: 4.7,
-      priceRange: '\$\$',
-      categories: ['Organic', 'Healthy'],
-      deliveryTime: 45,
-      imageUrls: ['assets/images/organic_products.png'],
-    ),
-  ];
-
-  final List<Recipe> _allRecipes = [
-    Recipe(
-      id: '1',
-      name: 'Quinoa Salad',
-      description: 'A healthy blend of quinoa, tomatoes, and cucumbers',
-      imageUrl: 'assets/images/quinoa_salad.png',
-      rating: 4.5,
-      cookTime: 15,
-      tags: ['Healthy', 'Vegan'],
-    ),
-    Recipe(
-      id: '2',
-      name: 'Avocado Toast',
-      description: 'Smashed avocado on sourdough bread',
-      imageUrl: 'assets/images/avocado_toast.png',
-      rating: 4.8,
-      cookTime: 10,
-      tags: ['Quick', 'Healthy'],
-    ),
-    Recipe(
-      id: '3',
-      name: 'Smoothie Bowl',
-      description: 'A refreshing mix of berries and bananas',
-      imageUrl: 'assets/images/smoothie_bowl.png',
-      rating: 4.7,
-      cookTime: 8,
-      tags: ['Breakfast', 'Healthy'],
-    ),
-    Recipe(
-      id: '4',
-      name: 'Grilled Chicken',
-      description: 'Perfectly seasoned grilled chicken breast',
-      imageUrl: 'assets/images/grilled_chicken.png',
-      rating: 4.6,
-      cookTime: 25,
-      tags: ['Protein', 'Dinner'],
-    ),
-    Recipe(
-      id: '5',
-      name: 'Pasta Carbonara',
-      description: 'Creamy Italian pasta with bacon and eggs',
-      imageUrl: 'assets/images/pasta_carbonara.png',
-      rating: 4.9,
-      cookTime: 20,
-      tags: ['Italian', 'Pasta'],
-    ),
-  ];
-
+  
+  // Filtered lists for search results
+  List<Recipe> _filteredRecipes = [];
+  List<Restaurant> _filteredRestaurants = [];
+  
+  // Use common data
+  final List<Recipe> allRecipes = AppData.recipes;
+  final List<Restaurant> allRestaurants = AppData.restaurants;
+  
   @override
   void initState() {
     super.initState();
-    _searchController.addListener(_onSearchChanged);
     _favoritesManager.addListener(_onFavoritesChanged);
+    _searchController.addListener(_onSearchChanged);
   }
-
+  
   @override
   void dispose() {
-    _searchController.removeListener(_onSearchChanged);
     _favoritesManager.removeListener(_onFavoritesChanged);
     _searchController.dispose();
     super.dispose();
   }
-
+  
   void _onFavoritesChanged() {
     setState(() {});
   }
-
+  
   void _onSearchChanged() {
-    final query = _searchController.text.toLowerCase().trim();
     setState(() {
-      _searchQuery = query;
-      _isSearching = query.isNotEmpty;
-      
+      String query = _searchController.text.toLowerCase();
       if (query.isEmpty) {
-        _filteredRestaurants = [];
         _filteredRecipes = [];
+        _filteredRestaurants = [];
       } else {
-        _filteredRestaurants = _allRestaurants.where((restaurant) {
-          return restaurant.name.toLowerCase().contains(query) ||
-                 restaurant.categories.any((category) => category.toLowerCase().contains(query));
-        }).toList();
+        _filteredRecipes = allRecipes.where((recipe) =>
+          recipe.name.toLowerCase().contains(query) ||
+          recipe.description.toLowerCase().contains(query) ||
+          recipe.tags.any((tag) => tag.toLowerCase().contains(query))
+        ).toList();
         
-        _filteredRecipes = _allRecipes.where((recipe) {
-          return recipe.name.toLowerCase().contains(query) ||
-                 recipe.description.toLowerCase().contains(query) ||
-                 recipe.tags.any((tag) => tag.toLowerCase().contains(query));
-        }).toList();
+        _filteredRestaurants = allRestaurants.where((restaurant) =>
+          restaurant.name.toLowerCase().contains(query) ||
+          restaurant.categories.any((category) => category.toLowerCase().contains(query))
+        ).toList();
       }
     });
   }
 
+  // Information items for Food Information Sharing
+  final List<Map<String, dynamic>> informationItems = [
+    {
+      'icon': Icons.eco,
+      'title': 'Delicious Recipes',
+      'description': 'Explore various cuisines and share your favorite dishes.',
+      'distance': '2 miles',
+    },
+    {
+      'icon': Icons.museum,
+      'title': 'Healthy Eating Tips',
+      'description': 'Discover nutritious recipes and meal plans.',
+      'distance': '5 miles',
+    },
+    {
+      'icon': Icons.tram,
+      'title': 'Culinary Adventures',
+      'description': 'Join us in exploring food cultures around the world.',
+      'distance': '3 miles',
+    },
+  ];
+
+  // Food images for the grid - Figma Search Page Images
+  final List<String> foodImages = [
+    'assets/images/food_sharing_table.png',     // 393x176 - 다양한 음식이 배치된 테이블
+    'assets/images/chef_cooking.png',           // 139x176 - 셰프가 요리하는 주방 장면
+    'assets/images/gourmet_plating.png',        // 250x176 - 고급 요리 플레이팅
+    'assets/images/food_market.png',            // 393x176 - 식재료 시장 장면
+    'assets/images/dessert_sharing.png',        // 250x176 - 디저트를 나누어 먹는 모습
+    'assets/images/appetizer_platter.png',      // 139x176 - 애피타이저 플래터
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFFFFCF5),
-      appBar: AppBar(
-        backgroundColor: Color(0xFFFFFCF5),
-        elevation: 0,
-        title: Text(
-          'Search',
-          style: GoogleFonts.robotoSlab(
-            fontSize: 18,
-            fontWeight: FontWeight.w700,
-            color: Color(0xFF281D1B),
-          ),
-        ),
-        centerTitle: true,
-      ),
-      body: Column(
-        children: [
-          // Search Bar
-          Padding(
-            padding: EdgeInsets.all(16),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.1),
-                    spreadRadius: 1,
-                    blurRadius: 5,
-                    offset: Offset(0, 2),
-                  ),
-                ],
+      backgroundColor: Color(0xFFFCFCFC),
+      body: SafeArea(
+        child: Column(
+          children: [
+            // Search Field Filled Out
+            _buildSearchField(),
+            
+            // Main Content
+            Expanded(
+              child: SingleChildScrollView(
+                child: _searchController.text.isNotEmpty 
+                  ? _buildSearchResults()
+                  : Column(
+                      children: [
+                        // Table Title Huge
+                        _buildTableTitle(),
+                        
+                        // Map Search Results
+                        _buildMapSearchResults(),
+                        
+                        // Image Grid Dynamic Sizes
+                        _buildImageGrid(),
+                        
+                        // Popular Places Section
+                        _buildPopularPlaces(),
+                      ],
+                    ),
               ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSearchField() {
+    return Container(
+      width: double.infinity,
+      height: 76,
+      color: Color(0xFFFCFCFC),
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Color(0xFF525252).withOpacity(0.09),
+          borderRadius: BorderRadius.circular(360),
+        ),
+        child: Row(
+          children: [
+            SizedBox(width: 13),
+            // Search Icon
+            Container(
+              width: 18,
+              height: 18,
+              child: Icon(
+                Icons.search,
+                size: 15,
+                color: Color(0xFF222222),
+              ),
+            ),
+            SizedBox(width: 8),
+            // Search Text
+            Expanded(
               child: TextField(
                 controller: _searchController,
-                decoration: InputDecoration(
-                  hintText: 'Search for recipes, restaurants...',
-                  hintStyle: GoogleFonts.plusJakartaSans(
-                    color: Color(0xFF2E1814).withOpacity(0.5),
-                  ),
-                  prefixIcon: Icon(
-                    Icons.search,
-                    color: Color(0xFF2E1814).withOpacity(0.5),
-                  ),
-                  suffixIcon: _searchQuery.isNotEmpty
-                      ? IconButton(
-                          icon: Icon(
-                            Icons.clear,
-                            color: Color(0xFF2E1814).withOpacity(0.5),
-                          ),
-                          onPressed: () {
-                            _searchController.clear();
-                          },
-                        )
-                      : null,
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                ),
                 style: GoogleFonts.plusJakartaSans(
-                  fontSize: 16,
-                  color: Color(0xFF281D1B),
+                  fontSize: 17,
+                  fontWeight: FontWeight.w400,
+                  color: Color(0xFF222222),
+                ),
+                decoration: InputDecoration(
+                  hintText: 'Search',
+                  hintStyle: GoogleFonts.plusJakartaSans(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w400,
+                    color: Color(0xFF222222),
+                  ),
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.zero,
                 ),
               ),
             ),
+            // Close Icon
+            Container(
+              width: 18,
+              height: 18,
+              child: Icon(
+                Icons.close,
+                size: 12,
+                color: Color(0xFF212121).withOpacity(0.62),
+              ),
+            ),
+            SizedBox(width: 13),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTableTitle() {
+    return Container(
+      width: double.infinity,
+      height: 63,
+      color: Color(0xFFFCFCFC),
+      padding: EdgeInsets.symmetric(horizontal: 16),
+      child: Center(
+        child: Text(
+          'Food Information Sharing',
+          style: GoogleFonts.plusJakartaSans(
+            fontSize: 28,
+            fontWeight: FontWeight.w700,
+            color: Color(0xFF222222),
+            letterSpacing: -0.56,
           ),
-          
-          // Search Results or Empty State
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMapSearchResults() {
+    return Container(
+      width: double.infinity,
+      child: Column(
+        children: informationItems.map((item) => _buildMapSearchResult(item)).toList(),
+      ),
+    );
+  }
+
+  Widget _buildMapSearchResult(Map<String, dynamic> item) {
+    return Container(
+      width: double.infinity,
+      height: 81,
+      color: Color(0xFFFCFCFC),
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      child: Row(
+        children: [
+          // Icon Frame
+          Container(
+            width: 24,
+            height: 24,
+            child: Icon(
+              item['icon'],
+              size: 20,
+              color: Color(0xFF222222),
+            ),
+          ),
+          SizedBox(width: 16),
+          // Content
           Expanded(
-            child: _isSearching
-                ? _buildSearchResults()
-                : _buildEmptySearchState(),
+            child: Container(
+              height: 49, // 고정 높이 설정으로 overflow 방지
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    item['title'],
+                    style: GoogleFonts.plusJakartaSans(
+                      fontSize: 17,
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xFF222222),
+                      letterSpacing: -0.34,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  SizedBox(height: 2), // 간격 줄임
+                  Expanded(
+                    child: Text(
+                      item['description'],
+                      style: GoogleFonts.plusJakartaSans(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xFF212121).withOpacity(0.62),
+                      ),
+                      maxLines: 1, // 1줄로 제한
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          // Distance
+          Container(
+            width: 50,
+            child: Text(
+              item['distance'],
+              style: GoogleFonts.plusJakartaSans(
+                fontSize: 15,
+                fontWeight: FontWeight.w400,
+                color: Color(0xFF212121).withOpacity(0.62),
+              ),
+              textAlign: TextAlign.right,
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildEmptySearchState() {
-    return Center(
+  Widget _buildImageGrid() {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.zero, // 패딩 제거
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            Icons.search,
-            size: 64,
-            color: Color(0xFF281D1B).withOpacity(0.3),
-          ),
-          SizedBox(height: 16),
-          Text(
-            'Start searching',
-            style: GoogleFonts.robotoSlab(
-              fontSize: 24,
-              fontWeight: FontWeight.w700,
-              color: Color(0xFF281D1B),
+          // First large image (393x176)
+          Container(
+            width: double.infinity,
+            height: 176,
+            margin: EdgeInsets.only(bottom: 4),
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(foodImages[0]),
+                fit: BoxFit.cover,
+                onError: (exception, stackTrace) {},
+              ),
+              color: Color(0xFF4CAF50).withOpacity(0.3),
+            ),
+            child: foodImages[0].isNotEmpty ? null : Container(
+              color: Color(0xFF4CAF50).withOpacity(0.3),
+              child: Center(
+                child: Icon(Icons.restaurant, size: 60, color: Colors.white),
+              ),
             ),
           ),
-          SizedBox(height: 8),
-          Text(
-            'Find your favorite recipes and restaurants',
-            style: GoogleFonts.plusJakartaSans(
-              fontSize: 16,
-              color: Color(0xFF2E1814).withOpacity(0.6),
+          
+          // Second row: Small (139) + Large (250)
+          Row(
+            children: [
+              // Left image (smaller - 139x176)
+              Container(
+                width: 139,
+                height: 176,
+                margin: EdgeInsets.only(right: 4, bottom: 4),
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(foodImages[1]),
+                    fit: BoxFit.cover,
+                    onError: (exception, stackTrace) {},
+                  ),
+                  color: Color(0xFF8BC34A).withOpacity(0.3),
+                ),
+                child: foodImages[1].isNotEmpty ? null : Container(
+                  color: Color(0xFF8BC34A).withOpacity(0.3),
+                  child: Center(
+                    child: Icon(Icons.restaurant, size: 40, color: Colors.white),
+                  ),
+                ),
+              ),
+              // Right image (larger - 250x176)
+              Container(
+                width: 250,
+                height: 176,
+                margin: EdgeInsets.only(bottom: 4),
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(foodImages[2]),
+                    fit: BoxFit.cover,
+                    onError: (exception, stackTrace) {},
+                  ),
+                  color: Color(0xFFFF9800).withOpacity(0.3),
+                ),
+                child: foodImages[2].isNotEmpty ? null : Container(
+                  color: Color(0xFFFF9800).withOpacity(0.3),
+                  child: Center(
+                    child: Icon(Icons.restaurant, size: 40, color: Colors.white),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          
+          // Third large image (393x176)
+          Container(
+            width: double.infinity,
+            height: 176,
+            margin: EdgeInsets.only(bottom: 4),
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(foodImages[3]),
+                fit: BoxFit.cover,
+                onError: (exception, stackTrace) {},
+              ),
+              color: Color(0xFF2196F3).withOpacity(0.3),
             ),
-            textAlign: TextAlign.center,
+            child: foodImages[3].isNotEmpty ? null : Container(
+              color: Color(0xFF2196F3).withOpacity(0.3),
+              child: Center(
+                child: Icon(Icons.restaurant, size: 60, color: Colors.white),
+              ),
+            ),
+          ),
+          
+          // Fourth row: Large (250) + Small (139)
+          Row(
+            children: [
+              // Left image (larger - 250x176)
+              Container(
+                width: 250,
+                height: 176,
+                margin: EdgeInsets.only(right: 4),
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(foodImages[4]),
+                    fit: BoxFit.cover,
+                    onError: (exception, stackTrace) {},
+                  ),
+                  color: Color(0xFF9C27B0).withOpacity(0.3),
+                ),
+                child: foodImages[4].isNotEmpty ? null : Container(
+                  color: Color(0xFF9C27B0).withOpacity(0.3),
+                  child: Center(
+                    child: Icon(Icons.restaurant, size: 40, color: Colors.white),
+                  ),
+                ),
+              ),
+              // Right image (smaller - 139x176)
+              Container(
+                width: 139,
+                height: 176,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(foodImages[5]),
+                    fit: BoxFit.cover,
+                    onError: (exception, stackTrace) {},
+                  ),
+                  color: Color(0xFF607D8B).withOpacity(0.3),
+                ),
+                child: foodImages[5].isNotEmpty ? null : Container(
+                  color: Color(0xFF607D8B).withOpacity(0.3),
+                  child: Center(
+                    child: Icon(Icons.restaurant, size: 40, color: Colors.white),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPopularPlaces() {
+    return Container(
+      width: double.infinity,
+      color: Color(0xFFFCFCFC),
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12), // padding 더 줄임
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center, // 중앙 정렬
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min, // 내용 크기에 맞춤
+              children: [
+                Text(
+                  'Popular Places',
+                  style: GoogleFonts.plusJakartaSans(
+                    fontSize: 17, // 폰트 크기 약간 줄임
+                    fontWeight: FontWeight.w700,
+                    color: Color(0xFF222222),
+                    letterSpacing: -0.34,
+                    height: 1.2, // 줄간격 조정
+                  ),
+                ),
+                Text(
+                  'See All',
+                  style: GoogleFonts.plusJakartaSans(
+                    fontSize: 12, // 폰트 크기 줄임
+                    fontWeight: FontWeight.w400,
+                    color: Color(0xFF212121).withOpacity(0.62),
+                    height: 1.1, // 줄간격 조정
+                  ),
+                ),
+              ],
+            ),
+          ),
+          // Forward Arrow
+          Container(
+            width: 20,
+            height: 20,
+            child: Icon(
+              Icons.arrow_forward_ios,
+              size: 14,
+              color: Color(0xFF212121).withOpacity(0.62),
+            ),
           ),
         ],
       ),
@@ -2253,227 +2455,113 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   Widget _buildSearchResults() {
-    final hasResults = _filteredRestaurants.isNotEmpty || _filteredRecipes.isNotEmpty;
+    bool hasResults = _filteredRecipes.isNotEmpty || _filteredRestaurants.isNotEmpty;
     
     if (!hasResults) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.search_off,
-              size: 64,
-              color: Color(0xFF281D1B).withOpacity(0.3),
-            ),
-            SizedBox(height: 16),
-            Text(
-              'No results found',
-              style: GoogleFonts.robotoSlab(
-                fontSize: 20,
-                fontWeight: FontWeight.w700,
-                color: Color(0xFF281D1B),
+      return Container(
+        height: 300,
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                padding: EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: Color(0xFFD72600).withOpacity(0.1),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.search_off,
+                  size: 40,
+                  color: Color(0xFF281D1B).withOpacity(0.6),
+                ),
               ),
-            ),
-            SizedBox(height: 8),
-            Text(
-              'Try searching for something else',
-              style: GoogleFonts.plusJakartaSans(
-                fontSize: 16,
-                color: Color(0xFF2E1814).withOpacity(0.6),
+              SizedBox(height: 20),
+              Text(
+                'No Results Found',
+                style: GoogleFonts.robotoSlab(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                  color: Color(0xFF281D1B),
+                  letterSpacing: -0.36,
+                ),
               ),
-            ),
-          ],
+              SizedBox(height: 8),
+              Text(
+                'Try searching for something else',
+                style: GoogleFonts.publicSans(
+                  fontSize: 15,
+                  color: Color(0xFF2E1814).withOpacity(0.62),
+                  letterSpacing: -0.075,
+                ),
+              ),
+            ],
+          ),
         ),
       );
     }
 
-    return ListView(
+    return Container(
       padding: EdgeInsets.symmetric(horizontal: 16),
-      children: [
-        // Recipes Section
-        if (_filteredRecipes.isNotEmpty) ...[
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 8),
-            child: Text(
-              'Recipes (${_filteredRecipes.length})',
-              style: GoogleFonts.robotoSlab(
-                fontSize: 18,
-                fontWeight: FontWeight.w700,
-                color: Color(0xFF281D1B),
-              ),
-            ),
-          ),
-          Container(
-            height: 250,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: _filteredRecipes.length,
-              itemBuilder: (context, index) => Container(
-                width: 173,
-                margin: EdgeInsets.only(right: 16),
-                child: _buildSearchRecipeCard(_filteredRecipes[index]),
-              ),
-            ),
-          ),
-          SizedBox(height: 24),
-        ],
-        
-        // Restaurants Section
-        if (_filteredRestaurants.isNotEmpty) ...[
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 8),
-            child: Text(
-              'Restaurants (${_filteredRestaurants.length})',
-              style: GoogleFonts.robotoSlab(
-                fontSize: 18,
-                fontWeight: FontWeight.w700,
-                color: Color(0xFF281D1B),
-              ),
-            ),
-          ),
-          ...(_filteredRestaurants.map((restaurant) => Padding(
-            padding: EdgeInsets.only(bottom: 16),
-            child: _buildSearchRestaurantCard(restaurant),
-          )).toList()),
-        ],
-      ],
-    );
-  }
-
-  Widget _buildSearchRecipeCard(Recipe recipe) {
-    return GestureDetector(
-      onTap: () {
-        // Navigate to recipe details
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          color: Color(0xFFFFFDFC),
-          borderRadius: BorderRadius.circular(18),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.1),
-              spreadRadius: 1,
-              blurRadius: 5,
-              offset: Offset(0, 2),
-            ),
-          ],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Recipe Image with Bookmark Icon
-            Stack(
-              children: [
-                Container(
-                  height: 128,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.vertical(top: Radius.circular(18)),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.vertical(top: Radius.circular(18)),
-                    child: Image.asset(
-                      recipe.imageUrl,
-                      width: double.infinity,
-                      height: 128,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) {
-                        return Container(
-                          color: Color(0xFF4CAF50).withOpacity(0.3),
-                          child: Center(
-                            child: Icon(
-                              Icons.restaurant,
-                              size: 40,
-                              color: Colors.white,
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ),
-                // Bookmark Icon
-                Positioned(
-                  top: 8,
-                  right: 8,
-                  child: GestureDetector(
-                    onTap: () {
-                      _favoritesManager.toggleRecipeFavorite(recipe.id);
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(6),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.9),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        _favoritesManager.isRecipeFavorite(recipe.id) 
-                          ? Icons.bookmark 
-                          : Icons.bookmark_border,
-                        color: _favoritesManager.isRecipeFavorite(recipe.id) 
-                          ? Color(0xFFFFB800)
-                          : Color(0xFF281D1B).withOpacity(0.6),
-                        size: 18,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            
-            // Recipe Info
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Recipes Section
+          if (_filteredRecipes.isNotEmpty) ...[
             Padding(
-              padding: EdgeInsets.all(12),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    recipe.name,
-                    style: GoogleFonts.robotoSlab(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w700,
-                      color: Color(0xFF281D1B),
-                      letterSpacing: -0.3,
-                    ),
-                  ),
-                  SizedBox(height: 4),
-                  Text(
-                    recipe.description,
-                    style: GoogleFonts.publicSans(
-                      fontSize: 13,
-                      color: Color(0xFF2E1814).withOpacity(0.62),
-                      letterSpacing: -0.065,
-                    ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  SizedBox(height: 8),
-                  Row(
-                    children: [
-                      _buildStarRating(recipe.rating),
-                      Spacer(),
-                      Icon(
-                        Icons.access_time,
-                        size: 12,
-                        color: Color(0xFF2E1814).withOpacity(0.62),
-                      ),
-                      SizedBox(width: 2),
-                      Text(
-                        '${recipe.cookTime} min',
-                        style: GoogleFonts.publicSans(
-                          fontSize: 12,
-                          color: Color(0xFF2E1814).withOpacity(0.62),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+              padding: EdgeInsets.symmetric(vertical: 16),
+              child: Text(
+                'Featured Recipes (${_filteredRecipes.length})',
+                style: GoogleFonts.robotoSlab(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                  color: Color(0xFF281D1B),
+                  letterSpacing: -0.36,
+                ),
               ),
             ),
+            Container(
+              height: 250,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: _filteredRecipes.length,
+                itemBuilder: (context, index) => Container(
+                  width: 173,
+                  margin: EdgeInsets.only(right: 16),
+                  child: buildRecipeCard(_filteredRecipes[index], _favoritesManager, (String recipeId) {
+                    _favoritesManager.toggleRecipeFavorite(recipeId);
+                  }),
+                ),
+              ),
+            ),
+            SizedBox(height: 24),
           ],
-        ),
+          
+          // Restaurants Section
+          if (_filteredRestaurants.isNotEmpty) ...[
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 16),
+              child: Text(
+                'Restaurants (${_filteredRestaurants.length})',
+                style: GoogleFonts.robotoSlab(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                  color: Color(0xFF281D1B),
+                  letterSpacing: -0.36,
+                ),
+              ),
+            ),
+            ...(_filteredRestaurants.map((restaurant) => Container(
+              margin: EdgeInsets.only(bottom: 16),
+              child: _buildSearchRestaurantCard(restaurant),
+            )).toList()),
+          ],
+        ],
       ),
     );
   }
+
+
 
   Widget _buildSearchRestaurantCard(Restaurant restaurant) {
     return Container(
@@ -2650,357 +2738,310 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 }
 
+// Favorites Screen matching Figma Favorites Page design exactly
 class FavoritesScreen extends StatefulWidget {
   @override
   _FavoritesScreenState createState() => _FavoritesScreenState();
 }
 
 class _FavoritesScreenState extends State<FavoritesScreen> {
-  final FavoritesManager _favoritesManager = FavoritesManager();
+  PageController _pageController = PageController();
+  int _currentPage = 0;
   
-  // Sample restaurants data (same as HomeScreen)
-  final List<Restaurant> restaurants = [
-    Restaurant(
-      id: '1',
-      name: 'Green Delight',
-      rating: 4.5,
-      priceRange: '\$\$',
-      categories: ['Vegan'],
-      deliveryTime: 30,
-      imageUrls: ['assets/images/restaurant_vegan.png'],
-    ),
-    Restaurant(
-      id: '2',
-      name: 'Healthy Bites',
-      rating: 4.8,
-      priceRange: '\$\$',
-      categories: ['Organic'],
-      deliveryTime: 25,
-      imageUrls: ['assets/images/restaurant_organic.png'],
-    ),
-    Restaurant(
-      id: '3',
-      name: 'Fresh Feast',
-      rating: 4.7,
-      priceRange: '\$\$\$',
-      categories: ['Gluten-Free'],
-      deliveryTime: 40,
-      imageUrls: ['assets/images/gluten_free.png'],
-    ),
-    Restaurant(
-      id: '4',
-      name: "Nature's Plate",
-      rating: 4.6,
-      priceRange: '\$\$',
-      categories: ['Dairy-Free'],
-      deliveryTime: 35,
-      imageUrls: ['assets/images/dairy_free.png'],
-    ),
-    Restaurant(
-      id: '5',
-      name: 'Pure Eats',
-      rating: 4.9,
-      priceRange: '\$\$\$',
-      categories: ['Organic'],
-      deliveryTime: 45,
-      imageUrls: ['assets/images/organic_products.png'],
-    ),
+  // 헤더 이미지들 리스트
+  final List<Map<String, String>> _headerImages = [
+    {'image': 'assets/images/favorites_header_sushi.png', 'title': 'Sushi Platter'},
+    {'image': 'assets/images/avocado_toast.png', 'title': 'Avocado Toast'}, 
+    {'image': 'assets/images/quinoa_salad.png', 'title': 'Quinoa Salad'},
+    {'image': 'assets/images/organic_products.png', 'title': 'Organic Products'},
+    {'image': 'assets/images/gluten_free.png', 'title': 'Gluten Free'},
   ];
-
-  @override
-  void initState() {
-    super.initState();
-    _favoritesManager.addListener(_onFavoritesChanged);
-  }
-
+  
   @override
   void dispose() {
-    _favoritesManager.removeListener(_onFavoritesChanged);
+    _pageController.dispose();
     super.dispose();
   }
-
-  void _onFavoritesChanged() {
-    setState(() {});
-  }
-
-  // Sample recipes data (same as HomeScreen)
-  final List<Recipe> featuredRecipes = [
-    Recipe(
-      id: '1',
-      name: 'Quinoa Salad',
-      description: 'A healthy blend of quinoa, tomatoes, and cucumbers',
-      imageUrl: 'assets/images/quinoa_salad.png',
-      rating: 4.5,
-      cookTime: 15,
-      tags: ['Healthy', 'Vegan'],
-    ),
-    Recipe(
-      id: '2',
-      name: 'Avocado Toast',
-      description: 'Smashed avocado on sourdough bread',
-      imageUrl: 'assets/images/avocado_toast.png',
-      rating: 4.8,
-      cookTime: 10,
-      tags: ['Quick', 'Healthy'],
-    ),
-    Recipe(
-      id: '3',
-      name: 'Smoothie Bowl',
-      description: 'A refreshing mix of berries and bananas',
-      imageUrl: 'assets/images/smoothie_bowl.png',
-      rating: 4.7,
-      cookTime: 8,
-      tags: ['Breakfast', 'Healthy'],
-    ),
+  // Restaurant data from Figma Favorites Page
+  final List<Map<String, dynamic>> firstGroupRestaurants = [
+    {
+      'name': 'Sushi Delight',
+      'rating': 4.5,
+      'priceRange': '\$\$',
+      'category': 'Japanese',
+      'time': '30 mins',
+      'imageUrl': 'assets/images/quinoa_salad.png',
+    },
+    {
+      'name': 'Pasta Paradise',
+      'rating': 4.7,
+      'priceRange': '\$\$',
+      'category': 'Italian',
+      'time': '25 mins',
+      'imageUrl': 'assets/images/avocado_toast.png',
+    },
+    {
+      'name': 'Burger Bonanza',
+      'rating': 4.2,
+      'priceRange': '\$',
+      'category': 'American',
+      'time': '20 mins',
+      'imageUrl': 'assets/images/smoothie_bowl.png',
+    },
+    {
+      'name': 'Taco Fiesta',
+      'rating': 4.8,
+      'priceRange': '\$',
+      'category': 'Mexican',
+      'time': '15 mins',
+      'imageUrl': 'assets/images/organic_products.png',
+    },
+    {
+      'name': 'Curry House',
+      'rating': 4.6,
+      'priceRange': '\$\$',
+      'category': 'Indian',
+      'time': '35 mins',
+      'imageUrl': 'assets/images/vegan_options.png',
+    },
   ];
 
-  List<Restaurant> get favoriteRestaurants => 
-    restaurants.where((restaurant) => _favoritesManager.isRestaurantFavorite(restaurant.id)).toList();
+  final List<Map<String, dynamic>> secondGroupRestaurants = [
+    {
+      'name': 'Vegan Delight',
+      'rating': 4.9,
+      'priceRange': '\$\$',
+      'category': 'Vegan',
+      'time': '40 mins',
+      'imageUrl': 'assets/images/gluten_free.png',
+    },
+    {
+      'name': 'Gluten-Free Gourmet',
+      'rating': 4.8,
+      'priceRange': '\$\$',
+      'category': 'Gluten-Free',
+      'time': '35 mins',
+      'imageUrl': 'assets/images/dairy_free.png',
+    },
+    {
+      'name': 'Keto Kitchen',
+      'rating': 4.7,
+      'priceRange': '\$\$',
+      'category': 'Keto',
+      'time': '30 mins',
+      'imageUrl': 'assets/images/restaurant_vegan.png',
+    },
+    {
+      'name': 'Paleo Plates',
+      'rating': 4.6,
+      'priceRange': '\$\$',
+      'category': 'Paleo',
+      'time': '45 mins',
+      'imageUrl': 'assets/images/restaurant_organic.png',
+    },
+    {
+      'name': 'Mediterranean Magic',
+      'rating': 4.9,
+      'priceRange': '\$\$',
+      'category': 'Mediterranean',
+      'time': '50 mins',
+      'imageUrl': 'assets/images/quinoa_salad.png',
+    },
+  ];
 
-  List<Recipe> get favoriteRecipes => 
-    featuredRecipes.where((recipe) => _favoritesManager.isRecipeFavorite(recipe.id)).toList();
-
-  void _toggleFavorite(String restaurantId) {
-    _favoritesManager.toggleRestaurantFavorite(restaurantId);
-  }
-
-  void _toggleRecipeFavorite(String recipeId) {
-    _favoritesManager.toggleRecipeFavorite(recipeId);
-  }
+  final List<String> ingredients = [
+    'Rice',
+    'Seaweed', 
+    'Salmon',
+    'Soy Sauce',
+    'Wasabi',
+  ];
 
   @override
   Widget build(BuildContext context) {
-    final favoriteRestaurantList = favoriteRestaurants;
-    final favoriteRecipeList = favoriteRecipes;
-    final hasAnyFavorites = favoriteRestaurantList.isNotEmpty || favoriteRecipeList.isNotEmpty;
-
     return Scaffold(
-      backgroundColor: Color(0xFFFFFCF5),
-      appBar: AppBar(
-        backgroundColor: Color(0xFFFFFCF5),
-        elevation: 0,
-        title: Text(
-          'Favorites',
-          style: GoogleFonts.robotoSlab(
-            fontSize: 18,
-            fontWeight: FontWeight.w700,
-            color: Color(0xFF281D1B),
+      backgroundColor: Color(0xFFFCFCFC),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              // Header Navigation Bar Immersive with Image
+              _buildImageHeader(),
+              
+              // Main Content
+              _buildMainContent(),
+            ],
           ),
         ),
-        centerTitle: true,
-      ),
-      body: !hasAnyFavorites
-          ? _buildEmptyFavorites()
-          : _buildFavoritesList(favoriteRestaurantList, favoriteRecipeList),
-    );
-  }
-
-  Widget _buildEmptyFavorites() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.favorite_border,
-            size: 80,
-            color: Color(0xFF9AC26B),
-          ),
-          SizedBox(height: 16),
-          Text(
-            'No Favorites Yet',
-            style: GoogleFonts.plusJakartaSans(
-              fontSize: 24,
-              fontWeight: FontWeight.w700,
-              color: Color(0xFF281D1B),
-            ),
-          ),
-          SizedBox(height: 8),
-          Text(
-            'Tap the heart icon on restaurants and recipes to add them here!',
-            style: GoogleFonts.plusJakartaSans(
-              fontSize: 16,
-              color: Color(0xFF2E1814).withOpacity(0.6),
-            ),
-            textAlign: TextAlign.center,
-          ),
-        ],
       ),
     );
   }
 
-  Widget _buildFavoritesList(List<Restaurant> favoriteRestaurantList, List<Recipe> favoriteRecipeList) {
-    return ListView(
-      padding: EdgeInsets.all(16),
-      children: [
-        // Favorite Recipes Section
-        if (favoriteRecipeList.isNotEmpty) ...[
-          Text(
-            'Favorite Recipes',
-            style: GoogleFonts.robotoSlab(
-              fontSize: 18,
-              fontWeight: FontWeight.w700,
-              color: Color(0xFF281D1B),
-              letterSpacing: -0.36,
-            ),
-          ),
-          SizedBox(height: 16),
-          Container(
-            height: 250,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: favoriteRecipeList.length,
-              itemBuilder: (context, index) => Container(
-                width: 173,
-                margin: EdgeInsets.only(right: 16),
-                child: _buildFavoriteRecipeCard(favoriteRecipeList[index]),
-              ),
-            ),
-          ),
-          SizedBox(height: 24),
-        ],
-        
-        // Favorite Restaurants Section
-        if (favoriteRestaurantList.isNotEmpty) ...[
-          Text(
-            'Favorite Restaurants',
-            style: GoogleFonts.robotoSlab(
-              fontSize: 18,
-              fontWeight: FontWeight.w700,
-              color: Color(0xFF281D1B),
-              letterSpacing: -0.36,
-            ),
-          ),
-          SizedBox(height: 16),
-          ...favoriteRestaurantList.map((restaurant) => 
-            Padding(
-              padding: EdgeInsets.only(bottom: 16),
-              child: _buildFavoriteRestaurantCard(restaurant),
-            )
-          ).toList(),
-        ],
-      ],
-    );
-  }
-
-  Widget _buildFavoriteRecipeCard(Recipe recipe) {
+  Widget _buildImageHeader() {
     return Container(
-      decoration: BoxDecoration(
-        color: Color(0xFFFFFDFC),
-        borderRadius: BorderRadius.circular(18),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            spreadRadius: 1,
-            blurRadius: 5,
-            offset: Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      width: double.infinity,
+      height: 600,
+      child: Stack(
         children: [
-          // Recipe Image with Heart Icon
-          Stack(
-            children: [
-              Container(
-                height: 128,
+          // PageView for scrollable images
+          PageView.builder(
+            controller: _pageController,
+            itemCount: _headerImages.length,
+            onPageChanged: (int page) {
+              setState(() {
+                _currentPage = page;
+              });
+            },
+            itemBuilder: (context, index) {
+              return Container(
+                width: double.infinity,
+                height: 600,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(18)),
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(18)),
-                  child: Image.asset(
-                    recipe.imageUrl,
-                    width: double.infinity,
-                    height: 128,
+                  image: DecorationImage(
+                    image: AssetImage(_headerImages[index]['image']!),
                     fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Container(
-                        color: Color(0xFF4CAF50).withOpacity(0.3),
-                        child: Center(
-                          child: Icon(
-                            Icons.restaurant,
-                            size: 40,
-                            color: Colors.white,
-                          ),
-                        ),
-                      );
+                    onError: (exception, stackTrace) {
+                      print('Error loading image: ${_headerImages[index]['image']}');
                     },
                   ),
                 ),
-              ),
-              // Heart Icon
-              Positioned(
-                top: 8,
-                right: 8,
-                child: GestureDetector(
-                  onTap: () => _toggleRecipeFavorite(recipe.id),
-                  child: Container(
-                    padding: EdgeInsets.all(6),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.9),
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      Icons.bookmark,
-                      color: Color(0xFFFFB800), // 노란색 책갈피
-                      size: 18,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          
-          // Recipe Info
-          Padding(
-            padding: EdgeInsets.all(12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  recipe.name,
-                  style: GoogleFonts.robotoSlab(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w700,
-                    color: Color(0xFF281D1B),
-                    letterSpacing: -0.3,
-                  ),
-                ),
-                SizedBox(height: 4),
-                Text(
-                  recipe.description,
-                  style: GoogleFonts.publicSans(
-                    fontSize: 13,
-                    color: Color(0xFF2E1814).withOpacity(0.62),
-                    letterSpacing: -0.065,
-                  ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                SizedBox(height: 8),
-                Row(
-                  children: [
-                    // Star Rating
-                    _buildStarRating(recipe.rating),
-                    Spacer(),
-                    // Cook Time
-                    Icon(
-                      Icons.access_time,
-                      size: 12,
-                      color: Color(0xFF2E1814).withOpacity(0.62),
-                    ),
-                    SizedBox(width: 2),
-                    Text(
-                      '${recipe.cookTime} min',
-                      style: GoogleFonts.publicSans(
-                        fontSize: 12,
-                        color: Color(0xFF2E1814).withOpacity(0.62),
+                child: Container(
+                  color: Colors.black.withOpacity(0.3), // 더 연한 overlay
+                  child: Center(
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.6),
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: Text(
+                        '${index + 1}. ${_headerImages[index]['title']}',
+                        style: GoogleFonts.plusJakartaSans(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
+                  ),
+                ),
+              );
+            },
+          ),
+          
+          // Top Gradient Overlay
+          Container(
+            width: double.infinity,
+            height: 150,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Color(0x99000000),
+                  Color(0x00000000),
+                ],
+              ),
+            ),
+          ),
+          
+          // Status Bar and Navigation
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              height: 104,
+              child: Column(
+                children: [
+                  // Status Bar
+                  Container(
+                    height: 56,
+                    padding: EdgeInsets.symmetric(horizontal: 32),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          '12:45',
+                          style: GoogleFonts.plusJakartaSans(
+                            fontSize: 17,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Icon(Icons.signal_cellular_4_bar, size: 16, color: Colors.white),
+                            SizedBox(width: 6),
+                            Icon(Icons.wifi, size: 16, color: Colors.white),
+                            SizedBox(width: 6),
+                            Icon(Icons.battery_full, size: 16, color: Colors.white),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  // Navigation
+                  Container(
+                    height: 48,
+                    child: Center(
+                      child: Text(
+                        'Favorites',
+                        style: GoogleFonts.plusJakartaSans(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white,
+                          letterSpacing: -0.34,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          
+          // Bottom Gradient and Page Indicator
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              height: 56,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Color(0x00000000),
+                    Color(0x99000000),
                   ],
                 ),
-              ],
+              ),
+              child: Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List.generate(
+                    _headerImages.length,
+                    (index) => Container(
+                      margin: EdgeInsets.symmetric(horizontal: 4),
+                      width: _currentPage == index ? 6 : 
+                             (_currentPage - index).abs() == 1 ? 6 :
+                             (_currentPage - index).abs() == 2 ? 4 : 2,
+                      height: _currentPage == index ? 6 : 
+                              (_currentPage - index).abs() == 1 ? 6 :
+                              (_currentPage - index).abs() == 2 ? 4 : 2,
+                      decoration: BoxDecoration(
+                        color: _currentPage == index 
+                            ? Colors.white 
+                            : Colors.white.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(_currentPage == index ? 3 : 
+                                                          (_currentPage - index).abs() == 1 ? 3 :
+                                                          (_currentPage - index).abs() == 2 ? 2 : 1),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             ),
           ),
         ],
@@ -3008,167 +3049,162 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
     );
   }
 
-  Widget _buildStarRating(double rating) {
-    List<Widget> stars = [];
-    int fullStars = rating.floor();
-    bool hasHalfStar = (rating - fullStars) >= 0.5;
-    
-    // Full stars - 빨간색으로 변경
-    for (int i = 0; i < fullStars; i++) {
-      stars.add(
-        Icon(
-          Icons.star,
-          size: 14,
-          color: Colors.red, // 빨간색
-        ),
-      );
-    }
-    
-    // Half star - 빨간색으로 변경
-    if (hasHalfStar && stars.length < 5) {
-      stars.add(
-        Icon(
-          Icons.star_half,
-          size: 14,
-          color: Colors.red, // 빨간색
-        ),
-      );
-    }
-    
-    // Empty stars - 회색
-    while (stars.length < 5) {
-      stars.add(
-        Icon(
-          Icons.star_border,
-          size: 14,
-          color: Color(0xFF281D1B).withOpacity(0.3),
-        ),
-      );
-    }
-    
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: stars,
+  Widget _buildMainContent() {
+    return Container(
+      width: double.infinity,
+      color: Color(0xFFFCFCFC),
+      child: Column(
+        children: [
+          // Table Title Huge - Featured Recipes (가로 스크롤) - 먼저 나옴
+          _buildSectionTitle('Featured Recipes'),
+          
+          // Recipes - 가로 스크롤
+          _buildRecipesHorizontalScroll(),
+          
+          SizedBox(height: 24),
+          
+          // Table Title Huge - Favorite Food Items (세로 스크롤) - 두 번째
+          _buildSectionTitle('Favorite Food Items'),
+          
+          // Food Items - 세로 스크롤
+          Column(
+            children: [
+              // First Group Restaurant Cards
+              ...firstGroupRestaurants.map((restaurant) => _buildFirstGroupRestaurantCard(restaurant)).toList(),
+              
+              // Second Group Restaurant Cards  
+              ...secondGroupRestaurants.map((restaurant) => _buildSecondGroupRestaurantCard(restaurant)).toList(),
+            ],
+          ),
+          
+          SizedBox(height: 24),
+          
+          // Ingredients Section
+          _buildIngredientsSection(),
+        ],
+      ),
     );
   }
 
-  Widget _buildFavoriteRestaurantCard(Restaurant restaurant) {
+  Widget _buildSectionTitle(String title) {
     return Container(
-      margin: EdgeInsets.only(bottom: 16),
-      padding: EdgeInsets.all(18),
-      decoration: BoxDecoration(
-        color: Color(0xFFFFFDFC),
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(
-          color: Color(0xFF6E5049).withOpacity(0.2),
-          width: 1,
+      width: double.infinity,
+      height: 63,
+      padding: EdgeInsets.symmetric(horizontal: 16),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          title,
+          style: GoogleFonts.plusJakartaSans(
+            fontSize: 28,
+            fontWeight: FontWeight.w700, // 동일한 볼드체로 통일
+            color: Color(0xFF222222),
+            letterSpacing: -0.56,
+          ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildRecipesHorizontalScroll() {
+    // 샘플 레시피 데이터
+    final List<Map<String, dynamic>> featuredRecipes = [
+      {
+        'name': 'Sushi Roll Recipe',
+        'time': '45 mins',
+        'difficulty': 'Medium',
+        'rating': 4.8,
+        'image': 'assets/images/sushi_circular_platter.png',
+      },
+      {
+        'name': 'Pasta Marinara',
+        'time': '30 mins', 
+        'difficulty': 'Easy',
+        'rating': 4.6,
+        'image': 'assets/images/pasta_marinara_basil.png',
+      },
+      {
+        'name': 'Gourmet Burger',
+        'time': '25 mins',
+        'difficulty': 'Medium',
+        'rating': 4.7,
+        'image': 'assets/images/burger_deluxe.png',
+      },
+      {
+        'name': 'Fresh Tacos',
+        'time': '20 mins',
+        'difficulty': 'Easy', 
+        'rating': 4.5,
+        'image': 'assets/images/taco_colorful.png',
+      },
+      {
+        'name': 'Curry Special',
+        'time': '40 mins',
+        'difficulty': 'Hard',
+        'rating': 4.9,
+        'image': 'assets/images/curry_main.png',
+      },
+    ];
+
+    return Container(
+      height: 280,
+      child: ListView.builder(
+        padding: EdgeInsets.symmetric(horizontal: 16),
+        scrollDirection: Axis.horizontal, // 가로 스크롤
+        itemCount: featuredRecipes.length,
+        itemBuilder: (context, index) {
+          final recipe = featuredRecipes[index];
+          return Container(
+            width: 220,
+            margin: EdgeInsets.only(right: 16),
+            child: _buildRecipeCard(recipe),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildRecipeCard(Map<String, dynamic> recipe) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.1),
             spreadRadius: 1,
-            blurRadius: 5,
-            offset: Offset(0, 2),
+            blurRadius: 8,
+            offset: Offset(0, 4),
           ),
         ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Restaurant Header
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: Text(
-                  restaurant.name,
-                  style: GoogleFonts.robotoSlab(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w700,
-                    color: Color(0xFF281D1B),
-                    letterSpacing: -0.34,
-                  ),
-                ),
-              ),
-              GestureDetector(
-                onTap: () => _toggleFavorite(restaurant.id),
-                child: Container(
-                  padding: EdgeInsets.all(8),
-                  child: Icon(
-                    Icons.favorite,
-                    color: Colors.red,
-                    size: 24,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          
-          SizedBox(height: 8),
-          
-          // Restaurant Info
-          Row(
-            children: [
-              Icon(Icons.star, size: 12, color: Colors.red),
-              SizedBox(width: 4),
-              Text(
-                restaurant.rating.toString(),
-                style: GoogleFonts.publicSans(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w500,
-                  color: Color(0xFF2E1814).withOpacity(0.62),
-                ),
-              ),
-              Text(' • ', style: TextStyle(color: Color(0xFF2E1814).withOpacity(0.62))),
-              Text(
-                restaurant.priceRange,
-                style: GoogleFonts.publicSans(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w500,
-                  color: Color(0xFF2E1814).withOpacity(0.62),
-                ),
-              ),
-              Text(' • ', style: TextStyle(color: Color(0xFF2E1814).withOpacity(0.62))),
-              Text(
-                restaurant.categories.join(', '),
-                style: GoogleFonts.publicSans(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w500,
-                  color: Color(0xFF2E1814).withOpacity(0.62),
-                ),
-              ),
-              Text(' • ', style: TextStyle(color: Color(0xFF2E1814).withOpacity(0.62))),
-              Text(
-                '${restaurant.deliveryTime} mins',
-                style: GoogleFonts.publicSans(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w500,
-                  color: Color(0xFF2E1814).withOpacity(0.62),
-                ),
-              ),
-            ],
-          ),
-          
-          SizedBox(height: 16),
-          
-          // Restaurant Image
+          // Recipe Image
           Container(
-            height: 120,
+            height: 140,
+            width: double.infinity,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(16),
+                topRight: Radius.circular(16),
+              ),
             ),
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(16),
+                topRight: Radius.circular(16),
+              ),
               child: Image.asset(
-                restaurant.imageUrls.first,
-                width: double.infinity,
+                recipe['image'],
                 fit: BoxFit.cover,
                 errorBuilder: (context, error, stackTrace) {
                   return Container(
                     color: Color(0xFF4CAF50).withOpacity(0.3),
                     child: Center(
                       child: Icon(
-                        Icons.restaurant,
+                        Icons.restaurant_menu,
                         size: 40,
                         color: Colors.white,
                       ),
@@ -3178,74 +3214,856 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
               ),
             ),
           ),
+          
+          // Recipe Info
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Recipe Name
+                  Text(
+                    recipe['name'],
+                    style: GoogleFonts.plusJakartaSans(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xFF222222),
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  
+                  SizedBox(height: 8),
+                  
+                  // Recipe Details
+                  Row(
+                    children: [
+                      Icon(Icons.access_time, size: 14, color: Colors.grey),
+                      SizedBox(width: 4),
+                      Text(
+                        recipe['time'],
+                        style: GoogleFonts.plusJakartaSans(
+                          fontSize: 12,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                      SizedBox(width: 12),
+                      Icon(Icons.star, size: 14, color: Colors.amber),
+                      SizedBox(width: 4),
+                      Text(
+                        recipe['rating'].toString(),
+                        style: GoogleFonts.plusJakartaSans(
+                          fontSize: 12,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ],
+                  ),
+                  
+                  SizedBox(height: 4),
+                  
+                  // Difficulty
+                  Text(
+                    recipe['difficulty'],
+                    style: GoogleFonts.plusJakartaSans(
+                      fontSize: 12,
+                      color: Color(0xFF4CAF50),
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFirstGroupRestaurantCard(Map<String, dynamic> restaurant) {
+    return Container(
+      width: double.infinity,
+      margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      decoration: BoxDecoration(
+        color: Color(0xFFFDFDFD),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: Color(0xFF5C5C5C).withOpacity(0.2),
+          width: 1,
+        ),
+      ),
+      child: Padding(
+        padding: EdgeInsets.all(18),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Restaurant Header
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Text(
+                    restaurant['name'],
+                    style: GoogleFonts.plusJakartaSans(
+                      fontSize: 17,
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xFF222222),
+                      letterSpacing: -0.34,
+                    ),
+                  ),
+                ),
+                Icon(
+                  Icons.favorite_border,
+                  color: Color(0xFF222222).withOpacity(0.6),
+                  size: 20,
+                ),
+              ],
+            ),
+            SizedBox(height: 8),
+            
+            // Restaurant Info
+            Row(
+              children: [
+                Icon(Icons.star, size: 12, color: Color(0xFF222222)),
+                SizedBox(width: 4),
+                Text(
+                  restaurant['rating'].toString(),
+                  style: GoogleFonts.plusJakartaSans(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFF212121).withOpacity(0.62),
+                  ),
+                ),
+                Text(' · ${restaurant['priceRange']} · ${restaurant['category']} · ${restaurant['time']}',
+                  style: GoogleFonts.plusJakartaSans(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFF212121).withOpacity(0.62),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 16),
+            
+            // Restaurant Images
+            Row(
+              children: [
+                // Large image
+                Expanded(
+                  flex: 3,
+                  child: Container(
+                    height: 207,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      image: DecorationImage(
+                        image: AssetImage(restaurant['imageUrl']),
+                        fit: BoxFit.cover,
+                        onError: (exception, stackTrace) {},
+                      ),
+                      color: Color(0xFF4CAF50).withOpacity(0.3),
+                    ),
+                    child: restaurant['imageUrl'].isNotEmpty ? null : Container(
+                      color: Color(0xFF4CAF50).withOpacity(0.3),
+                      child: Center(
+                        child: Icon(Icons.restaurant, size: 60, color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(width: 8),
+                // Small images column
+                Expanded(
+                  flex: 2,
+                  child: Column(
+                    children: [
+                      Container(
+                        height: 99.5,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: Color(0xFF4CAF50).withOpacity(0.3),
+                        ),
+                        child: Center(
+                          child: Icon(Icons.restaurant, size: 40, color: Colors.white),
+                        ),
+                      ),
+                      SizedBox(height: 8),
+                      Container(
+                        height: 99.5,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: Color(0xFF4CAF50).withOpacity(0.3),
+                        ),
+                        child: Center(
+                          child: Icon(Icons.restaurant, size: 40, color: Colors.white),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSecondGroupRestaurantCard(Map<String, dynamic> restaurant) {
+    return Container(
+      width: double.infinity,
+      margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      decoration: BoxDecoration(
+        color: Color(0xFFFCFDFF),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: Color(0xFF495B6E).withOpacity(0.2),
+          width: 1,
+        ),
+      ),
+      child: Padding(
+        padding: EdgeInsets.all(18),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Restaurant Header
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Text(
+                    restaurant['name'],
+                    style: GoogleFonts.plusJakartaSans(
+                      fontSize: 17,
+                      fontWeight: FontWeight.w400,
+                      color: Color(0xFF1B2128),
+                    ),
+                  ),
+                ),
+                Icon(
+                  Icons.favorite_border,
+                  color: Color(0xFF1B2128).withOpacity(0.6),
+                  size: 20,
+                ),
+              ],
+            ),
+            SizedBox(height: 8),
+            
+            // Restaurant Info
+            Row(
+              children: [
+                Icon(Icons.star, size: 12, color: Color(0xFF1B2128)),
+                SizedBox(width: 4),
+                Text(
+                  restaurant['rating'].toString(),
+                  style: GoogleFonts.plusJakartaSans(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w400,
+                    color: Color(0xFF14212E).withOpacity(0.62),
+                  ),
+                ),
+                Text(' · ${restaurant['priceRange']} · ${restaurant['category']} · ${restaurant['time']}',
+                  style: GoogleFonts.plusJakartaSans(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w400,
+                    color: Color(0xFF14212E).withOpacity(0.62),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 16),
+            
+            // Restaurant Images
+            Row(
+              children: [
+                // Large image
+                Expanded(
+                  flex: 3,
+                  child: Container(
+                    height: 207,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      image: DecorationImage(
+                        image: AssetImage(restaurant['imageUrl']),
+                        fit: BoxFit.cover,
+                        onError: (exception, stackTrace) {},
+                      ),
+                      color: Color(0xFF2196F3).withOpacity(0.3),
+                    ),
+                    child: restaurant['imageUrl'].isNotEmpty ? null : Container(
+                      color: Color(0xFF2196F3).withOpacity(0.3),
+                      child: Center(
+                        child: Icon(Icons.restaurant, size: 60, color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(width: 8),
+                // Small images column
+                Expanded(
+                  flex: 2,
+                  child: Column(
+                    children: [
+                      Container(
+                        height: 99.5,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: Color(0xFF2196F3).withOpacity(0.3),
+                        ),
+                        child: Center(
+                          child: Icon(Icons.restaurant, size: 40, color: Colors.white),
+                        ),
+                      ),
+                      SizedBox(height: 8),
+                      Container(
+                        height: 99.5,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: Color(0xFF2196F3).withOpacity(0.3),
+                        ),
+                        child: Center(
+                          child: Icon(Icons.restaurant, size: 40, color: Colors.white),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildIngredientsSection() {
+    return Container(
+      width: double.infinity,
+      margin: EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Section Header
+          Text(
+            'Ingredients',
+            style: GoogleFonts.plusJakartaSans(
+              fontSize: 18,
+              fontWeight: FontWeight.w700,
+              color: Color(0xFF222222),
+              letterSpacing: -0.36,
+            ),
+          ),
+          SizedBox(height: 8),
+          // Divider
+          Container(
+            width: double.infinity,
+            height: 1,
+            color: Color(0xFF5C5C5C).withOpacity(0.2),
+          ),
+          SizedBox(height: 8),
+          // Servings
+          Text(
+            '4 servings',
+            style: GoogleFonts.plusJakartaSans(
+              fontSize: 13,
+              fontWeight: FontWeight.w500,
+              color: Color(0xFF212121).withOpacity(0.62),
+            ),
+          ),
+          SizedBox(height: 16),
+          // Ingredients List
+          ...ingredients.map((ingredient) => _buildIngredientItem(ingredient)).toList(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildIngredientItem(String ingredient) {
+    return Container(
+      width: double.infinity,
+      height: 50,
+      child: Column(
+        children: [
+          Expanded(
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                ingredient,
+                style: GoogleFonts.plusJakartaSans(
+                  fontSize: 17,
+                  fontWeight: FontWeight.w400,
+                  color: Color(0xFF222222),
+                ),
+              ),
+            ),
+          ),
+          Container(
+            width: double.infinity,
+            height: 0.5,
+            color: Color(0xFF5C5C5C).withOpacity(0.2),
+          ),
         ],
       ),
     );
   }
 }
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
+  @override
+  _ProfileScreenState createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  // Social media posts data
+  final List<Map<String, dynamic>> socialPosts = [
+    {
+      'userImage': 'assets/images/quinoa_salad.png',
+      'username': 'Astrid C. Valdez',
+      'timestamp': 'Just made this amazing spaghetti carbonara!',
+      'caption': 'Just made this amazing spaghetti carbonara!',
+      'postImage': 'assets/images/quinoa_salad.png',
+      'likes': 500,
+      'comments': 45,
+    },
+    {
+      'userImage': 'assets/images/avocado_toast.png',
+      'username': 'Astrid C. Valdez',
+      'timestamp': 'Tasting the best chocolate lava cake in town!',
+      'caption': 'Tasting the best chocolate lava cake in town!',
+      'postImage': 'assets/images/avocado_toast.png',
+      'likes': 300,
+      'comments': 30,
+    },
+    {
+      'userImage': 'assets/images/smoothie_bowl.png',
+      'username': 'Astrid C. Valdez',
+      'timestamp': 'Enjoying a delightful brunch with avocado toast and poached eggs.',
+      'caption': 'Enjoying a delightful brunch with avocado toast and poached eggs.',
+      'postImage': 'assets/images/smoothie_bowl.png',
+      'likes': 200,
+      'comments': 20,
+    },
+  ];
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFFFFCF5),
-      appBar: AppBar(
-        backgroundColor: Color(0xFFFFFCF5),
-        elevation: 0,
-        title: Text(
-          'Profile',
-          style: GoogleFonts.robotoSlab(
-            fontSize: 18,
-            fontWeight: FontWeight.w700,
-            color: Color(0xFF281D1B),
+      backgroundColor: Color(0xFF080808),
+      body: CustomScrollView(
+        slivers: [
+          // Header with Image
+          SliverToBoxAdapter(
+            child: _buildHeader(),
           ),
-        ),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            icon: Icon(Icons.logout, color: Color(0xFF281D1B)),
-            onPressed: () {
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => LoginScreen()),
-                (route) => false,
-              );
-            },
+          
+          // Profile Section
+          SliverToBoxAdapter(
+            child: _buildProfileSection(),
+          ),
+          
+          // Social Photo Feed
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) => _buildSocialPost(socialPosts[index]),
+              childCount: socialPosts.length,
+            ),
           ),
         ],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CircleAvatar(
-              radius: 50,
-              backgroundColor: Color(0xFF9AC26B),
-              child: Icon(
-                Icons.person,
-                size: 60,
-                color: Colors.white,
+    );
+  }
+
+  Widget _buildHeader() {
+    return Container(
+      width: double.infinity,
+      height: 426,
+      child: Stack(
+        children: [
+          // Background Image
+          Container(
+            width: double.infinity,
+            height: 426,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/images/quinoa_salad.png'),
+                fit: BoxFit.cover,
+                onError: (exception, stackTrace) {},
+              ),
+              color: Color(0xFF4CAF50).withOpacity(0.8),
+            ),
+            child: Container(
+              color: Color(0xFF4CAF50).withOpacity(0.3),
+            ),
+          ),
+          
+          // Top Gradient Overlay
+          Container(
+            width: double.infinity,
+            height: 150,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Color(0x99000000),
+                  Color(0x00000000),
+                ],
               ),
             ),
-            SizedBox(height: 16),
-            Text(
-              'Welcome to FoodiGenie!',
-              style: GoogleFonts.plusJakartaSans(
-                fontSize: 24,
-                fontWeight: FontWeight.w700,
-                color: Color(0xFF281D1B),
+          ),
+          
+          // Status Bar and Navigation
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              height: 104,
+              child: Column(
+                children: [
+                  // Status Bar
+                  Container(
+                    height: 56,
+                    padding: EdgeInsets.symmetric(horizontal: 32),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Recipe Time',
+                          style: GoogleFonts.inter(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                            height: 1.21,
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Icon(Icons.signal_cellular_4_bar, size: 16, color: Colors.white),
+                            SizedBox(width: 6),
+                            Icon(Icons.wifi, size: 16, color: Colors.white),
+                            SizedBox(width: 6),
+                            Icon(Icons.battery_full, size: 16, color: Colors.white),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  // Navigation
+                  Container(
+                    height: 48,
+                    child: Center(
+                      child: Text(
+                        'Profile',
+                        style: GoogleFonts.inter(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                          letterSpacing: -0.425,
+                          height: 1.21,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-            SizedBox(height: 8),
-            Text(
-              'Manage your profile and preferences',
-              style: GoogleFonts.plusJakartaSans(
-                fontSize: 16,
-                color: Color(0xFF2E1814).withOpacity(0.6),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildProfileSection() {
+    return Container(
+      width: double.infinity,
+      color: Color(0xFF080808),
+      padding: EdgeInsets.all(16),
+      child: Column(
+        children: [
+          // Profile Image
+          Container(
+            width: 120,
+            height: 120,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              image: DecorationImage(
+                image: AssetImage('assets/images/quinoa_salad.png'),
+                fit: BoxFit.cover,
+                onError: (exception, stackTrace) {},
+              ),
+              color: Color(0xFF4CAF50).withOpacity(0.3),
+            ),
+            child: Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Color(0xFF4CAF50).withOpacity(0.3),
+              ),
+              child: Center(
+                child: Icon(Icons.person, size: 60, color: Colors.white),
               ),
             ),
-          ],
+          ),
+          SizedBox(height: 16),
+          
+          // Profile Info
+          Text(
+            'Culinary Creations',
+            style: GoogleFonts.inter(
+              fontSize: 22,
+              fontWeight: FontWeight.w600,
+              color: Color(0xFFDDDDDD),
+              letterSpacing: -0.55,
+              height: 1.30,
+            ),
+          ),
+          SizedBox(height: 4),
+          Text(
+            'Food Lover',
+            style: GoogleFonts.inter(
+              fontSize: 17,
+              fontWeight: FontWeight.w400,
+              color: Color(0xFFDDDDDD),
+              letterSpacing: -0.085,
+              height: 1.35,
+            ),
+          ),
+          SizedBox(height: 16),
+          
+          // Followers Stats
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _buildStatItem('1.2k', 'Followers'),
+              SizedBox(width: 20),
+              _buildStatItem('300', 'Following'),
+            ],
+          ),
+          SizedBox(height: 24),
+          
+          // Follow Button
+          Container(
+            width: double.infinity,
+            height: 50,
+            child: ElevatedButton(
+              onPressed: () {},
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(48),
+                ),
+                elevation: 0,
+              ),
+              child: Text(
+                'Follow',
+                style: GoogleFonts.inter(
+                  fontSize: 17,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black,
+                  height: 1.35,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStatItem(String count, String label) {
+    return Column(
+      children: [
+        Text(
+          count,
+          style: GoogleFonts.inter(
+            fontSize: 15,
+            fontWeight: FontWeight.w600,
+            color: Color(0xFFDEDEDE).withOpacity(0.4),
+            letterSpacing: -0.075,
+            height: 1.35,
+          ),
         ),
+        Text(
+          label,
+          style: GoogleFonts.inter(
+            fontSize: 15,
+            fontWeight: FontWeight.w600,
+            color: Color(0xFFDEDEDE).withOpacity(0.4),
+            letterSpacing: -0.075,
+            height: 1.35,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSocialPost(Map<String, dynamic> post) {
+    return Container(
+      width: double.infinity,
+      color: Color(0xFF080808),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Post Header
+          Container(
+            padding: EdgeInsets.all(16),
+            child: Row(
+              children: [
+                // User Avatar
+                Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                      image: AssetImage(post['userImage']),
+                      fit: BoxFit.cover,
+                      onError: (exception, stackTrace) {},
+                    ),
+                    color: Color(0xFF4CAF50).withOpacity(0.3),
+                  ),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Color(0xFF4CAF50).withOpacity(0.3),
+                    ),
+                    child: Center(
+                      child: Icon(Icons.person, size: 20, color: Colors.white),
+                    ),
+                  ),
+                ),
+                SizedBox(width: 16),
+                // User Info
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        post['username'],
+                        style: GoogleFonts.inter(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xFFDDDDDD),
+                          letterSpacing: -0.075,
+                          height: 1.35,
+                        ),
+                      ),
+                      Text(
+                        post['timestamp'],
+                        style: GoogleFonts.inter(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xFFDEDEDE).withOpacity(0.62),
+                          height: 1.21,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          
+          // Post Caption
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            child: Text(
+              post['caption'],
+              style: GoogleFonts.inter(
+                fontSize: 15,
+                fontWeight: FontWeight.w400,
+                color: Color(0xFFDDDDDD),
+                letterSpacing: -0.075,
+                height: 1.35,
+              ),
+            ),
+          ),
+          SizedBox(height: 16),
+          
+          // Post Image
+          Container(
+            width: double.infinity,
+            height: 393,
+            margin: EdgeInsets.symmetric(horizontal: 16),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16),
+              image: DecorationImage(
+                image: AssetImage(post['postImage']),
+                fit: BoxFit.cover,
+                onError: (exception, stackTrace) {},
+              ),
+              color: Color(0xFF4CAF50).withOpacity(0.3),
+            ),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                color: Color(0xFF4CAF50).withOpacity(0.3),
+              ),
+              child: Center(
+                child: Icon(Icons.image, size: 80, color: Colors.white),
+              ),
+            ),
+          ),
+          SizedBox(height: 16),
+          
+          // Post Actions
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            child: Row(
+              children: [
+                // Like Button
+                Row(
+                  children: [
+                    Icon(Icons.favorite_border, size: 16, color: Color(0xFFDDDDDD)),
+                    SizedBox(width: 8),
+                    Text(
+                      post['likes'].toString(),
+                      style: GoogleFonts.inter(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xFFDDDDDD),
+                        letterSpacing: -0.075,
+                        height: 1.35,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(width: 20),
+                // Comment Button
+                Row(
+                  children: [
+                    Icon(Icons.chat_bubble_outline, size: 16, color: Color(0xFFDDDDDD)),
+                    SizedBox(width: 8),
+                    Text(
+                      post['comments'].toString(),
+                      style: GoogleFonts.inter(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xFFDDDDDD),
+                        letterSpacing: -0.075,
+                        height: 1.35,
+                      ),
+                    ),
+                  ],
+                ),
+                Spacer(),
+                // More Button
+                Icon(Icons.more_horiz, size: 16, color: Color(0xFFDDDDDD)),
+              ],
+            ),
+          ),
+          SizedBox(height: 24),
+          
+          // Divider
+          Container(
+            width: double.infinity,
+            height: 1,
+            color: Color(0xFFA3A3A3).withOpacity(0.2),
+          ),
+          SizedBox(height: 24),
+        ],
       ),
     );
   }

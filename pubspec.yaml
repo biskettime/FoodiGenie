@@ -1,5 +1,5 @@
-name: login_app
-description: A Flutter login app based on Figma design
+name: foodigenie
+description: FoodiGenie - A Flutter food app with genie theme
 
 publish_to: "none"
 
@@ -35,6 +35,8 @@ flutter_launcher_icons:
   ios: true
   image_path: "assets/icon/app_icon.png"
   min_sdk_android: 21 # android min sdk min:16, default 21
+  adaptive_icon_background: "#FF8C00" # 오렌지 배경색
+  adaptive_icon_foreground: "assets/icon/app_icon.png" # 지니 이미지
   web:
     generate: true
     image_path: "assets/icon/app_icon.png"
